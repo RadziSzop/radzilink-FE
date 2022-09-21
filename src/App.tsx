@@ -1,11 +1,11 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import { Test } from "./views/MainPage";
+import { MainPage } from "./views/MainPage/MainPage";
 function App() {
   return (
-    <div className="App">
+    <div className="appContainer">
       <Routes>
-        <Route path="/" element={<Test />} />
+        <Route path="/" element={<MainPage />} />
       </Routes>
     </div>
   );
