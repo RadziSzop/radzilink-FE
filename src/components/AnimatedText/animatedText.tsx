@@ -1,16 +1,18 @@
 import { motion } from "framer-motion";
+import { StyledAnimatedH1 } from "./styledAnimatedText";
 interface IProps {
   children: string;
-  type?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p";
+
   colorFrom?: string;
   colorTo?: string;
+  fontSize?: string;
 }
 
-export const AnimatedText = ({
+export const AnimatedH1 = ({
   children,
-  type = "p",
   colorFrom = "#e9d8c9",
-  colorTo = "#836245",
+  colorTo = "#774e2f",
+  fontSize = "3rem",
 }: IProps) => {
   const container = {
     visible: {
@@ -39,13 +41,13 @@ export const AnimatedText = ({
   for (const word of words) {
     word.push("\u00A0");
   }
-  const Type = type;
+
   return (
     <motion.div initial="hidden" animate="visible" variants={container}>
-      <Type>
-        {words.map((word: string[]) => {
+      <StyledAnimatedH1 fontSize={fontSize}>
+        {words.map((word: string[], index: number) => {
           return (
-            <>
+            <div key={index} style={{ display: "inline-block" }}>
               {word.map((letter: string, index: number) => {
                 return (
                   <span
@@ -64,10 +66,10 @@ export const AnimatedText = ({
                   </span>
                 );
               })}
-            </>
+            </div>
           );
         })}
-      </Type>
+      </StyledAnimatedH1>
     </motion.div>
   );
 };

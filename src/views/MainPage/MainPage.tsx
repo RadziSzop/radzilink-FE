@@ -1,15 +1,15 @@
 import { LinkBar } from "../../components/LinkBar/linkBar";
-import { StyledContainer } from "./styledMainPage";
+import { StyledLinkBarContainer, StyledContainer } from "./styledMainPage";
 import { motion } from "framer-motion";
-import { AnimatedText } from "../../components/AnimatedText/animatedText";
+import { AnimatedH1 } from "../../components/AnimatedText/animatedText";
 
 export const MainPage = () => {
   return (
-    <>
-      <AnimatedText type="h1">Link Shortener</AnimatedText>
-      <StyledContainer as={motion.div}>
+    <StyledContainer>
+      <AnimatedH1 fontSize="3.5rem">Link Shortener</AnimatedH1>
+      <StyledLinkBarContainer as={motion.div}>
         <LinkBar />
-      </StyledContainer>
-    </>
+      </StyledLinkBarContainer>
+    </StyledContainer>
   );
 };
