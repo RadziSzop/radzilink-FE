@@ -6,7 +6,9 @@ import { AnimatedH1 } from "../../components/AnimatedText/animatedText";
 export const MainPage = () => {
   return (
     <StyledContainer>
-      <AnimatedH1 fontSize="3.5rem">Link Shortener</AnimatedH1>
+      <AnimatedH1 fontSize="3.5rem" colorTo="rgb(221, 109, 86)">
+        Link Shortener
+      </AnimatedH1>
       <StyledLinkBarContainer as={motion.div}>
         <LinkBar />
       </StyledLinkBarContainer>

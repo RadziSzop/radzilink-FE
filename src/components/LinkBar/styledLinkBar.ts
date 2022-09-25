@@ -4,7 +4,6 @@ export const StyledLinkBar = styled.input`
   padding: 1rem;
   padding-left: 1.5rem;
   border-radius: 30px;
-  margin-top: 3rem;
   border: none;
   max-width: 1000px;
   box-shadow: inset 0px 0px 1px 0px #cccccc;

@@ -4,6 +4,8 @@ export const StyledLinkBarContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
+  position: relative;
+  max-width: 700px;
 `;
 export const StyledContainer = styled.div`
   display: flex;
