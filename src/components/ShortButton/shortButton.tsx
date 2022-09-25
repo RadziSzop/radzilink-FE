@@ -35,7 +35,7 @@ export const ShortButton = ({ linkBarValue, setLinkBarValue }: IProps) => {
           index,
         }))
         .sort((a: shuffledBaseLink, b: shuffledBaseLink) => a.sort - b.sort)
-        .map((value: shuffledBaseLink, index: number) => ({ value, index }));
+        .map(({ value, index }) => ({ value, index }));
       const times: number[] = [];
       let remaining = difference;
       for (let i = 0; i < ticks - 1; i++) {
