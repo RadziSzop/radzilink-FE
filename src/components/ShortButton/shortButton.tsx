@@ -1,9 +1,8 @@
-import { StyledShortButton, StyledLoadingSvg } from "./styledShortButton";
+import { StyledShortButton, StyledButtonText } from "./styledShortButton";
 import { motion } from "framer-motion";
 import { z } from "zod";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import MySvg from "../../assets/loading.svg";
 interface IProps {
   linkBarValue: string;
   setLinkBarValue: React.Dispatch<React.SetStateAction<string>>;
@@ -135,7 +134,7 @@ export const ShortButton = ({ linkBarValue, setLinkBarValue }: IProps) => {
         transition={{ opacity: { type: "linear", delay: 1.5 } }}
       >
         {/* TODO:  change loading svg to border animation */}
-        {isLoading ? <StyledLoadingSvg src={MySvg} alt="test" /> : buttonText}
+        <StyledButtonText>{buttonText}</StyledButtonText>
       </StyledShortButton>
     </>
   );
