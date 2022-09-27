@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { z } from "zod";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useMorph } from "../../hooks/useMorph";
 interface IProps {
   linkBarValue: string;
   setLinkBarValue: React.Dispatch<React.SetStateAction<string>>;
@@ -16,56 +17,17 @@ export const ShortButton = ({ linkBarValue, setLinkBarValue }: IProps) => {
   const [buttonText, setButtonText] = useState<string>("Short me!");
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [shortenedUrl, setShortenedUrl] = useState<string | undefined>();
-
-  const morphUrl = (
-    from: string,
-    to: string,
-    fromDispatch: React.Dispatch<React.SetStateAction<string>>
-  ) => {
-    if (from.length > to.length) {
-      const ticks = to.length;
-      const difference: number = from.length - to.length;
-      const shuffledBaseLink: shuffledBaseLink | any = to
-        .split("")
-        .map((value: string, index: number) => ({
-          value,
-          sort: Math.random(),
-          index,
-        }))
-        .sort((a: shuffledBaseLink, b: shuffledBaseLink) => a.sort - b.sort)
-        .map(({ value, index }) => ({ value, index }));
-      const times: number[] = [];
-      let remaining = difference;
-      for (let i = 0; i < ticks - 1; i++) {
-        const tickLetters = Math.floor(difference / ticks);
-        remaining = remaining - tickLetters;
-        times.push(tickLetters);
-      }
-      times.unshift(remaining);
-
-      let index = 0;
-      const test = setInterval(() => {
-        if (index >= ticks) {
-          clearInterval(test);
-          return;
-        }
-        fromDispatch((prevState: string) => {
-          const newLink = (
-            prevState.substring(0, shuffledBaseLink[index].index) +
-            shuffledBaseLink[index].value +
-            prevState.substring(shuffledBaseLink[index].index + 1)
-          ).substring(0, prevState.length - times[++index - 1]);
-          return newLink;
-        });
-      }, 50);
-    }
-  };
-  useEffect(() => {
-    if (shortenedUrl === undefined) return;
-    morphUrl(linkBarValue, shortenedUrl, setLinkBarValue);
-  }, [shortenedUrl]);
-  const list = {
+  const [shortenedUrl, setShortenedUrl] = useState<string>("");
+  const [copyUrl, setCopyUrl] = useState<boolean>(false);
+  const morphUrl = useMorph();
+  const regex =
+    /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+  const linkBarSchema = z
+    .string()
+    .regex(regex)
+    .max(8192, "Url is too long!")
+    .trim();
+  const ShortButtonVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -80,14 +42,12 @@ export const ShortButton = ({ linkBarValue, setLinkBarValue }: IProps) => {
       scale: 0.95,
     },
   };
-  const regex =
-    /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
 
-  const linkBarSchema = z
-    .string()
-    .regex(regex)
-    .max(1024, "Url is too long!")
-    .trim();
+  useEffect(() => {
+    if (shortenedUrl) {
+      morphUrl(linkBarValue, shortenedUrl, setLinkBarValue, setIsLoading);
+    }
+  }, [shortenedUrl]);
 
   const validateInput = async () => {
     const linkValidation = await linkBarSchema.safeParseAsync(
@@ -110,30 +70,44 @@ export const ShortButton = ({ linkBarValue, setLinkBarValue }: IProps) => {
         url: linkValidation.data,
       })
       .then(function (response) {
-        setShortenedUrl(`localhost:3000/url/${response.data.encodedUrlIndex}`);
-        console.log(
-          `new url: localhost:3000/url/${response.data.encodedUrlIndex}`
-        );
-        setIsLoading(false);
+        setShortenedUrl(`localhost:5173/${response.data.encodedUrlIndex}`);
+        setCopyUrl(true);
+        setButtonText("Copy");
+        // TODO: Animate Copy button
       })
       .catch(function (error) {
-        console.log(error);
+        setIsLoading(false);
+        setIsError(true);
+        setButtonText(error.response.data);
+        setTimeout(() => {
+          setButtonText("Short me!");
+          setIsError(false);
+        }, 2000);
       });
   };
   return (
     <>
       <StyledShortButton
+        isLoading={isLoading}
         as={motion.div}
-        onClick={validateInput}
+        onClick={() => {
+          if (!copyUrl) {
+            validateInput();
+          } else {
+            navigator.clipboard.writeText(shortenedUrl);
+            //TODO: change when you can copy url
+            setCopyUrl(false);
+            setButtonText("Short me!");
+          }
+        }}
         layout
-        variants={list}
+        variants={ShortButtonVariants}
         initial="hidden"
         animate={!isError ? "visible" : "error"}
         whileHover="hover"
         whileTap="click"
         transition={{ opacity: { type: "linear", delay: 1.5 } }}
       >
-        {/* TODO:  change loading svg to border animation */}
         <StyledButtonText>{buttonText}</StyledButtonText>
       </StyledShortButton>
     </>

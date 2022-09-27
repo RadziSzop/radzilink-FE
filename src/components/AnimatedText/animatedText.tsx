@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { StyledAnimatedH1 } from "./styledAnimatedText";
 interface IProps {
   children: string;
-
   colorFrom?: string;
   colorTo?: string;
   fontSize?: string;

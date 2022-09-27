@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
 export const StyledLinkBar = styled.input`
-  padding: 1rem;
-  padding-left: 1.5rem;
+  padding: 1rem 7rem 1rem 1.5rem;
   border-radius: 30px;
   border: none;
   max-width: 1000px;

@@ -1,6 +1,9 @@
 import styled from "styled-components";
+interface IProps {
+  isLoading: boolean;
+}
 
-export const StyledShortButton = styled.div`
+export const StyledShortButton = styled.div<IProps>`
   padding: 0.7rem;
   position: absolute;
   right: 10px;
@@ -10,14 +13,16 @@ export const StyledShortButton = styled.div`
   background-color: #ec755d;
   border: none;
   outline: none;
-
   display: flex;
   overflow: hidden;
   justify-content: center;
   align-items: center;
   z-index: 2;
   &::before {
+    ${({isLoading})  => isLoading && `
     content: "";
+  `}
+
     position: absolute;
     width: 100%;
     height: 70%;
@@ -25,7 +30,9 @@ export const StyledShortButton = styled.div`
     animation: loading 2s linear infinite;
   }
   &::after {
+    ${({isLoading})  => isLoading && `
     content: "";
+  `}
     position: absolute;
     background: #ec755d;
     inset: 2px;
