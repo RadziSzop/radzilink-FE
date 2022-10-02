@@ -5,7 +5,8 @@ export const useMorph = () => {
     originalString: string,
     desiredText: string,
     setMorphedUrl: React.Dispatch<React.SetStateAction<string>>,
-    setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>
+    setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>,
+    setCopyUrl?: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     const ticks = desiredText.length;
     // TODO: Improve morphingUrl function
@@ -41,9 +42,10 @@ export const useMorph = () => {
     }
 
     let index = 0;
-    const test = setInterval(() => {
+    const morphing = setInterval(() => {
       if (index >= ticks) {
-        clearInterval(test);
+        clearInterval(morphing);
+        if (setCopyUrl) setCopyUrl(true);
         if (setIsLoading) {
           setIsLoading(false);
         }

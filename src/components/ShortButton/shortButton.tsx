@@ -4,25 +4,25 @@ import { z } from "zod";
 import axios from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useMorph } from "../../hooks/useMorph";
+import { Notification } from "../Notification/notification";
 interface IProps {
   copyUrl: boolean;
   setCopyUrl: React.Dispatch<React.SetStateAction<boolean>>;
   linkBarValue: string;
   setLinkBarValue: React.Dispatch<React.SetStateAction<string>>;
-  validationError: string;
   SetValidationError: Dispatch<SetStateAction<string>>;
 }
-
+// TODO: Disable changing linkBarValue when morphing
 export const ShortButton = ({
   linkBarValue,
   setLinkBarValue,
   SetValidationError,
-  validationError,
   copyUrl,
   setCopyUrl,
 }: IProps) => {
   const [buttonText, setButtonText] = useState<string>("Short me!");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isNotification, setIsNotification] = useState<boolean>(false);
   const [shortenedUrl, setShortenedUrl] = useState<string>("");
   const animationControler = useAnimationControls();
   const morphUrl = useMorph();
@@ -60,7 +60,13 @@ export const ShortButton = ({
 
   useEffect(() => {
     if (shortenedUrl) {
-      morphUrl(linkBarValue, shortenedUrl, setLinkBarValue, setIsLoading);
+      morphUrl(
+        linkBarValue,
+        shortenedUrl,
+        setLinkBarValue,
+        setIsLoading,
+        setCopyUrl
+      );
     }
   }, [shortenedUrl]);
   useEffect(() => {
@@ -95,8 +101,6 @@ export const ShortButton = ({
       })
       .then(function (response) {
         setShortenedUrl(`localhost:5173/${response.data.encodedUrlIndex}`);
-        setCopyUrl(true);
-        // TODO: Animate Copy button
       })
       .catch(function (error) {
         setIsLoading(false);
@@ -113,6 +117,7 @@ export const ShortButton = ({
             validateInput();
           } else {
             navigator.clipboard.writeText(shortenedUrl);
+            setIsNotification(true);
             //TODO: change when you can copy url
             setCopyUrl(false);
           }
@@ -123,10 +128,16 @@ export const ShortButton = ({
         animate={animationControler}
         whileHover="hover"
         whileTap="click"
-        transition={{}}
       >
         <StyledButtonText>{buttonText}</StyledButtonText>
       </StyledShortButton>
+      {isNotification && (
+        <Notification
+          message="Copied!"
+          time={1400}
+          disabler={setIsNotification}
+        />
+      )}
     </>
   );
 };
