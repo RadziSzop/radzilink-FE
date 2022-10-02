@@ -7,27 +7,38 @@ export const useMorph = () => {
     setMorphedUrl: React.Dispatch<React.SetStateAction<string>>,
     setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
-    // if (originalString.length > desiredText.length) {
-    // TODO: Improve morphingUrl function
     const ticks = desiredText.length;
+    // TODO: Improve morphingUrl function
     const difference: number = originalString.length - desiredText.length;
-    const shuffledBaseLink = desiredText
-      .split("")
-      .map((value: string, index: number) => ({
-        value,
-        sort: Math.random(),
-        index,
-      }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ value, index }) => ({ value, index }));
+    const isLong = difference < 0 ? false : true;
+    const shuffledDestinationLink = isLong
+      ? desiredText
+          .split("")
+          .map((value: string, index: number) => ({
+            value,
+            sort: Math.random(),
+            index,
+          }))
+          .sort((a, b) => a.sort - b.sort)
+          .map(({ value, index }) => ({ value, index }))
+      : desiredText.split("").map((value: string, index: number) => ({
+          value,
+          index,
+        }));
     const times: number[] = [];
-    let remaining = difference;
-    for (let i = 0; i < ticks - 1; i++) {
+
+    if (isLong) {
       const tickLetters = Math.floor(difference / ticks);
-      remaining = remaining - tickLetters;
-      times.push(tickLetters);
+      let remaining = difference - tickLetters * ticks;
+      for (let i = 0; i < ticks; i++) {
+        if (remaining > 0) {
+          times.push(tickLetters + 1);
+          remaining = remaining - 1;
+        } else {
+          times.push(tickLetters);
+        }
+      }
     }
-    times.unshift(remaining);
 
     let index = 0;
     const test = setInterval(() => {
@@ -36,19 +47,22 @@ export const useMorph = () => {
         if (setIsLoading) {
           setIsLoading(false);
         }
-
         return;
       }
       setMorphedUrl((prevState: string) => {
-        const newLink = (
-          prevState.substring(0, shuffledBaseLink[index].index) +
-          shuffledBaseLink[index].value +
-          prevState.substring(shuffledBaseLink[index].index + 1)
-        ).substring(0, prevState.length - times[++index - 1]);
+        const newLink = isLong
+          ? (
+              prevState.substring(0, shuffledDestinationLink[index].index) +
+              shuffledDestinationLink[index].value +
+              prevState.substring(shuffledDestinationLink[index].index + 1)
+            ).substring(0, prevState.length - times[++index - 1])
+          : prevState.substring(0, index) +
+            shuffledDestinationLink[index].value +
+            prevState.substring(++index);
+
         return newLink;
       });
     }, 50);
-    // }
   };
   return morphUrl;
 };

@@ -1,9 +1,14 @@
 import { motion } from "framer-motion";
 import { StyledLinkBar } from "./styledLinkBar";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { ShortButton } from "../ShortButton/shortButton";
-export const LinkBar = () => {
+interface IProps {
+  validationError: string;
+  SetValidationError: Dispatch<SetStateAction<string>>;
+}
+export const LinkBar = ({ validationError, SetValidationError }: IProps) => {
   const [linkBarValue, setLinkBarValue] = useState("");
+  const [copyUrl, setCopyUrl] = useState<boolean>(false);
 
   return (
     <>
@@ -11,7 +16,12 @@ export const LinkBar = () => {
         spellCheck={"false"}
         as={motion.input}
         value={linkBarValue}
-        onChange={(e) => setLinkBarValue(e.target.value)}
+        onChange={(e) => {
+          setLinkBarValue(e.target.value);
+          if (copyUrl) {
+            setCopyUrl(false);
+          }
+        }}
         type="text"
         initial={{ width: 0, opacity: 0 }}
         animate={{
@@ -25,8 +35,12 @@ export const LinkBar = () => {
         }}
       />
       <ShortButton
+        copyUrl={copyUrl}
+        setCopyUrl={setCopyUrl}
         linkBarValue={linkBarValue}
         setLinkBarValue={setLinkBarValue}
+        validationError={validationError}
+        SetValidationError={SetValidationError}
       />
     </>
   );
