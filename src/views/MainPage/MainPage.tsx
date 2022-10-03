@@ -14,8 +14,8 @@ export const MainPage = () => {
       </AnimatedH1>
       <StyledLinkBarContainer as={motion.div}>
         <LinkBar
-          validationError={validationError}
-          SetValidationError={setValidationError}
+          // validationError={validationError}
+          setValidationError={setValidationError}
         />
       </StyledLinkBarContainer>
       <ErrorText errorText={validationError} />

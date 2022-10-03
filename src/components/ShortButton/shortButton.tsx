@@ -10,13 +10,13 @@ interface IProps {
   setCopyUrl: React.Dispatch<React.SetStateAction<boolean>>;
   linkBarValue: string;
   setLinkBarValue: React.Dispatch<React.SetStateAction<string>>;
-  SetValidationError: Dispatch<SetStateAction<string>>;
+  setValidationError: Dispatch<SetStateAction<string>>;
 }
 // TODO: Disable changing linkBarValue when morphing
 export const ShortButton = ({
   linkBarValue,
   setLinkBarValue,
-  SetValidationError,
+  setValidationError,
   copyUrl,
   setCopyUrl,
 }: IProps) => {
@@ -24,7 +24,12 @@ export const ShortButton = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isNotification, setIsNotification] = useState<boolean>(false);
   const [shortenedUrl, setShortenedUrl] = useState<string>("");
-  const animationControler = useAnimationControls();
+  const [isError, setIsError] = useState<boolean>(false);
+  // const animationControler = useAnimationControls();
+  const [activeVariant, setActiveVariant] = useState<string>("visible");
+  useEffect(() => {
+    console.log(activeVariant);
+  });
   const morphUrl = useMorph();
   const regex =
     /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
@@ -42,21 +47,31 @@ export const ShortButton = ({
     },
     error: {
       opacity: 1,
-      backgroundColor: "rgb(255, 0, 0)",
-      rotateZ: [0, -5, 5, -5, 0],
+      backgroundColor: ["#ff0000", "#ec755d"],
+      rotate: [0, -5, 5, -5, 0],
       x: [0, -5, 5, -5, 0],
       transition: {
+        backgroundCoor: { times: [0, 0.8] },
         x: { duration: 0.75 },
       },
     },
     hover: {
-      backgroundColor: "rgb(188, 84, 62)",
+      // backgroundColor: "rgb(188, 84, 62)",
+      backgroundColor: "rgb(106, 250, 10)",
       scale: 1.05,
     },
     click: {
       scale: 0.95,
     },
   };
+
+  // useEffect(() => {
+  //   if (isError) {
+  //     setTimeout(() => {
+  //       setIsError(false);
+  //     }, 1000);
+  //   }
+  // }, [isError]);
 
   useEffect(() => {
     if (shortenedUrl) {
@@ -69,9 +84,7 @@ export const ShortButton = ({
       );
     }
   }, [shortenedUrl]);
-  useEffect(() => {
-    animationControler.start("visible");
-  }, []);
+
   useEffect(() => {
     if (copyUrl) {
       setButtonText("Copy");
@@ -86,14 +99,20 @@ export const ShortButton = ({
         : `https://${linkBarValue}`
     );
     if (!linkValidation.success) {
-      SetValidationError("Url is invalid!");
-      await animationControler.start("error");
-      await animationControler.start("visible");
+      console.log("VALIDATION ERROR");
+      setValidationError("Url is invalid!");
+      // setIsError(true);
+      // ustawic frames
+      setActiveVariant("error");
+      setTimeout(() => {
+        setActiveVariant("visible");
+        console.log("TIMEOUTING!");
+      }, 1000);
       return;
     } else {
-      SetValidationError("");
+      setValidationError("");
+      setIsError(false);
     }
-    animationControler.start("click");
     setIsLoading(true);
     axios
       .post("http://localhost:3000/url ", {
@@ -104,7 +123,7 @@ export const ShortButton = ({
       })
       .catch(function (error) {
         setIsLoading(false);
-        SetValidationError(error.message);
+        setValidationError(error.message);
       });
   };
   return (
@@ -113,25 +132,27 @@ export const ShortButton = ({
         isLoading={isLoading}
         as={motion.div}
         onClick={() => {
+          // if (!isError) {
           if (!copyUrl) {
             validateInput();
           } else {
             navigator.clipboard.writeText(shortenedUrl);
             setIsNotification(true);
-            //TODO: change when you can copy url
             setCopyUrl(false);
           }
+          // }
         }}
         layout
         variants={ShortButtonVariants}
         initial="hidden"
-        animate={animationControler}
-        whileHover="hover"
-        whileTap="click"
+        animate={activeVariant}
+        whileHover={activeVariant !== "error" ? "hover" : ""}
+        whileTap={activeVariant !== "error" ? "click" : ""}
       >
         <StyledButtonText>{buttonText}</StyledButtonText>
       </StyledShortButton>
       {isNotification && (
+        // && isError
         <Notification
           message="Copied!"
           time={1400}

@@ -3,9 +3,9 @@ import { StyledLinkBar } from "./styledLinkBar";
 import { Dispatch, SetStateAction, useState } from "react";
 import { ShortButton } from "../ShortButton/shortButton";
 interface IProps {
-  SetValidationError: Dispatch<SetStateAction<string>>;
+  setValidationError: Dispatch<SetStateAction<string>>;
 }
-export const LinkBar = ({ SetValidationError }: IProps) => {
+export const LinkBar = ({ setValidationError }: IProps) => {
   const [linkBarValue, setLinkBarValue] = useState("");
   const [copyUrl, setCopyUrl] = useState<boolean>(false);
 
@@ -38,7 +38,7 @@ export const LinkBar = ({ SetValidationError }: IProps) => {
         setCopyUrl={setCopyUrl}
         linkBarValue={linkBarValue}
         setLinkBarValue={setLinkBarValue}
-        SetValidationError={SetValidationError}
+        setValidationError={setValidationError}
       />
     </>
   );
