@@ -13,5 +13,13 @@ export const StyledContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-bottom: 10rem;
+  margin-bottom: 2.5rem;
+`;
+export const StyledCustomizeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 700px;
 `;

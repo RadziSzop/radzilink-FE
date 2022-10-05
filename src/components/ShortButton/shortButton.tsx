@@ -11,25 +11,24 @@ interface IProps {
   linkBarValue: string;
   setLinkBarValue: React.Dispatch<React.SetStateAction<string>>;
   setValidationError: Dispatch<SetStateAction<string>>;
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
-// TODO: Disable changing linkBarValue when morphing
 export const ShortButton = ({
   linkBarValue,
   setLinkBarValue,
   setValidationError,
   copyUrl,
   setCopyUrl,
+  isLoading,
+  setIsLoading,
 }: IProps) => {
   const [buttonText, setButtonText] = useState<string>("Short me!");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isNotification, setIsNotification] = useState<boolean>(false);
   const [shortenedUrl, setShortenedUrl] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
-  // const animationControler = useAnimationControls();
-  const [activeVariant, setActiveVariant] = useState<string>("visible");
-  useEffect(() => {
-    console.log(activeVariant);
-  });
+  const animationControler = useAnimationControls();
+
   const morphUrl = useMorph();
   const regex =
     /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
@@ -42,36 +41,26 @@ export const ShortButton = ({
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
+      scale: 1,
       backgroundColor: "rgb(236, 117, 93)",
       transition: { opacity: { type: "linear", delay: 1.5 } },
     },
     error: {
-      opacity: 1,
-      backgroundColor: ["#ff0000", "#ec755d"],
+      backgroundColor: "#fa3f06",
       rotate: [0, -5, 5, -5, 0],
       x: [0, -5, 5, -5, 0],
       transition: {
-        backgroundCoor: { times: [0, 0.8] },
         x: { duration: 0.75 },
       },
     },
     hover: {
-      // backgroundColor: "rgb(188, 84, 62)",
-      backgroundColor: "rgb(106, 250, 10)",
+      backgroundColor: "rgb(188, 84, 62)",
       scale: 1.05,
     },
     click: {
       scale: 0.95,
     },
   };
-
-  // useEffect(() => {
-  //   if (isError) {
-  //     setTimeout(() => {
-  //       setIsError(false);
-  //     }, 1000);
-  //   }
-  // }, [isError]);
 
   useEffect(() => {
     if (shortenedUrl) {
@@ -92,6 +81,9 @@ export const ShortButton = ({
       setButtonText("Short me!");
     }
   }, [copyUrl]);
+  useEffect(() => {
+    animationControler.start("visible");
+  }, []);
   const validateInput = async () => {
     const linkValidation = await linkBarSchema.safeParseAsync(
       linkBarValue.includes("https://") || linkBarValue.includes("http://")
@@ -99,19 +91,17 @@ export const ShortButton = ({
         : `https://${linkBarValue}`
     );
     if (!linkValidation.success) {
-      console.log("VALIDATION ERROR");
       setValidationError("Url is invalid!");
-      // setIsError(true);
-      // ustawic frames
-      setActiveVariant("error");
+      animationControler.start("error");
+      setIsError(true);
       setTimeout(() => {
-        setActiveVariant("visible");
-        console.log("TIMEOUTING!");
+        animationControler.start("visible");
+        setIsError(false);
       }, 1000);
       return;
     } else {
       setValidationError("");
-      setIsError(false);
+      // setIsError(false);
     }
     setIsLoading(true);
     axios
@@ -132,27 +122,41 @@ export const ShortButton = ({
         isLoading={isLoading}
         as={motion.div}
         onClick={() => {
-          // if (!isError) {
-          if (!copyUrl) {
-            validateInput();
-          } else {
-            navigator.clipboard.writeText(shortenedUrl);
-            setIsNotification(true);
-            setCopyUrl(false);
+          if (!isError) {
+            if (!copyUrl) {
+              validateInput();
+            } else {
+              navigator.clipboard.writeText(shortenedUrl);
+              setIsNotification(true);
+              setCopyUrl(false);
+            }
           }
-          // }
         }}
         layout
         variants={ShortButtonVariants}
         initial="hidden"
-        animate={activeVariant}
-        whileHover={activeVariant !== "error" ? "hover" : ""}
-        whileTap={activeVariant !== "error" ? "click" : ""}
+        animate={animationControler}
+        onHoverStart={() => {
+          if (!isError) {
+            animationControler.start("hover");
+          }
+        }}
+        onHoverEnd={() => {
+          if (!isError) {
+            animationControler.start("visible");
+          }
+        }}
+        onTapStart={() => {
+          if (!isError) {
+            animationControler.start("click");
+          }
+        }}
+        // whileHover={activeVariant === "error" ? "" : "hover"}
+        // whileTap={activeVariant === "error" ? "" : "click"}
       >
         <StyledButtonText>{buttonText}</StyledButtonText>
       </StyledShortButton>
       {isNotification && (
-        // && isError
         <Notification
           message="Copied!"
           time={1400}

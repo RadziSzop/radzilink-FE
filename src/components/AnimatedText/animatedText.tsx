@@ -42,7 +42,7 @@ export const AnimatedH1 = ({
   }
 
   return (
-    <motion.div initial="hidden" animate="visible" variants={container}>
+    <motion.div initial="hidden" animate="visible" variants={container} layout>
       <StyledAnimatedH1 fontSize={fontSize}>
         {words.map((word: string[], index: number) => {
           return (

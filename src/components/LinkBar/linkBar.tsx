@@ -6,19 +6,23 @@ interface IProps {
   setValidationError: Dispatch<SetStateAction<string>>;
 }
 export const LinkBar = ({ setValidationError }: IProps) => {
-  const [linkBarValue, setLinkBarValue] = useState("");
+  const [linkBarValue, setLinkBarValue] = useState<string>("");
   const [copyUrl, setCopyUrl] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (
     <>
       <StyledLinkBar
         spellCheck={"false"}
         as={motion.input}
+        layout
         value={linkBarValue}
         onChange={(e) => {
-          setLinkBarValue(e.target.value);
-          if (copyUrl) {
-            setCopyUrl(false);
+          if (!isLoading) {
+            setLinkBarValue(e.target.value);
+            if (copyUrl) {
+              setCopyUrl(false);
+            }
           }
         }}
         type="text"
@@ -26,14 +30,16 @@ export const LinkBar = ({ setValidationError }: IProps) => {
         animate={{
           width: [70, 700],
           opacity: 1,
-        }}
-        transition={{
-          type: "spring",
-          delay: 0.5,
-          stiffness: 50,
+          transition: {
+            type: "spring",
+            delay: 0.5,
+            stiffness: 50,
+          },
         }}
       />
       <ShortButton
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
         copyUrl={copyUrl}
         setCopyUrl={setCopyUrl}
         linkBarValue={linkBarValue}

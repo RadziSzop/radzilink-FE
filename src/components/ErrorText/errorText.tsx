@@ -8,6 +8,7 @@ function ErrorText({ errorText }: IProps) {
     <StyledErrorTextContainer>
       {errorText !== "" && (
         <motion.p
+          layout
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
         >
