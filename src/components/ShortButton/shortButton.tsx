@@ -4,27 +4,28 @@ import { z } from "zod";
 import axios from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useMorph } from "../../hooks/useMorph";
-import { Notification } from "../Notification/notification";
+import { notification } from "../Notification/notification";
+
 interface IProps {
   copyUrl: boolean;
-  setCopyUrl: React.Dispatch<React.SetStateAction<boolean>>;
   linkBarValue: string;
+  isLoading: boolean;
+  setCopyUrl: React.Dispatch<React.SetStateAction<boolean>>;
   setLinkBarValue: React.Dispatch<React.SetStateAction<string>>;
   setValidationError: Dispatch<SetStateAction<string>>;
-  isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const ShortButton = ({
   linkBarValue,
+  copyUrl,
+  isLoading,
   setLinkBarValue,
   setValidationError,
-  copyUrl,
   setCopyUrl,
-  isLoading,
   setIsLoading,
 }: IProps) => {
   const [buttonText, setButtonText] = useState<string>("Short me!");
-  const [isNotification, setIsNotification] = useState<boolean>(false);
+  const { NotificationProvider, notify } = notification();
   const [shortenedUrl, setShortenedUrl] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
   const animationControler = useAnimationControls();
@@ -84,6 +85,7 @@ export const ShortButton = ({
   useEffect(() => {
     animationControler.start("visible");
   }, []);
+
   const validateInput = async () => {
     const linkValidation = await linkBarSchema.safeParseAsync(
       linkBarValue.includes("https://") || linkBarValue.includes("http://")
@@ -101,7 +103,6 @@ export const ShortButton = ({
       return;
     } else {
       setValidationError("");
-      // setIsError(false);
     }
     setIsLoading(true);
     axios
@@ -116,19 +117,21 @@ export const ShortButton = ({
         setValidationError(error.message);
       });
   };
+
   return (
     <>
       <StyledShortButton
         isLoading={isLoading}
         as={motion.div}
-        onClick={() => {
+        onClick={async () => {
           if (!isError) {
-            if (!copyUrl) {
-              validateInput();
-            } else {
-              navigator.clipboard.writeText(shortenedUrl);
-              setIsNotification(true);
+            if (copyUrl) {
+              await navigator.clipboard.writeText(shortenedUrl);
+              await notify();
               setCopyUrl(false);
+              // TODO: hide copy button faster;
+            } else {
+              validateInput();
             }
           }
         }}
@@ -151,18 +154,10 @@ export const ShortButton = ({
             animationControler.start("click");
           }
         }}
-        // whileHover={activeVariant === "error" ? "" : "hover"}
-        // whileTap={activeVariant === "error" ? "" : "click"}
       >
         <StyledButtonText>{buttonText}</StyledButtonText>
       </StyledShortButton>
-      {isNotification && (
-        <Notification
-          message="Copied!"
-          time={1400}
-          disabler={setIsNotification}
-        />
-      )}
+      <NotificationProvider message="Copied!" time={1400} />
     </>
   );
 };

@@ -1,26 +1,21 @@
 import { motion } from "framer-motion";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { useContext } from "react";
 import { StyledHandle, StyledSwitch } from "./styledCustomToggle";
-
+import { IContext, ICustomSettings, SettingsContext } from "../customizeForm";
 interface IProps {
-  type: string;
-  customSettings: any;
-  setCustomSettings: Dispatch<SetStateAction<any>>;
+  type: "deleteAfterRead" | "analitics";
 }
-export const CustomToggle = ({
-  customSettings,
-  setCustomSettings,
-  type,
-}: IProps) => {
-  useEffect(() => {
-    console.log(customSettings);
-  }, [customSettings]);
+export const CustomToggle = ({ type }: IProps) => {
+  const settingsContext: IContext | null = useContext(SettingsContext);
+  if (!settingsContext) return null;
+  const { customSettings, setCustomSettings } = settingsContext;
+
   return (
     <StyledSwitch
       as={motion.div}
       customSettings={customSettings[type]}
       onClick={() => {
-        setCustomSettings((prevState: any) => {
+        setCustomSettings((prevState: ICustomSettings) => {
           const newSettings = { ...prevState };
           newSettings[type] = !newSettings[type];
           return newSettings;
@@ -32,8 +27,8 @@ export const CustomToggle = ({
         layout
         transition={{
           type: "spring",
-          stiffness: 700,
-          damping: 30,
+          stiffness: 650,
+          damping: 25,
         }}
       />
     </StyledSwitch>

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState, createContext } from "react";
 import { CustomToggle } from "./DeleteToggle/customToggle";
 import { LinkInput } from "./LinkInput/linkInput";
 import {
@@ -8,15 +8,20 @@ import {
   StyledInputContainer,
 } from "./styledCustomizeForm";
 
-interface IProps {
-  isCustomize: boolean;
-}
 export interface ICustomSettings {
   customUrl: string;
   password: string;
   deleteAfterRead: boolean;
   analitics: boolean;
 }
+export interface IContext {
+  customSettings: ICustomSettings;
+  setCustomSettings: React.Dispatch<React.SetStateAction<ICustomSettings>>;
+}
+interface IProps {
+  isCustomize: boolean;
+}
+export const SettingsContext = createContext<IContext | null>(null);
 export const CustomizeForm = ({ isCustomize }: IProps) => {
   const [customSettings, setCustomSettings] = useState<ICustomSettings>({
     customUrl: "",
@@ -24,17 +29,13 @@ export const CustomizeForm = ({ isCustomize }: IProps) => {
     deleteAfterRead: false,
     analitics: false,
   });
-  const variants = {
+  const formVariants = {
     hidden: {
       height: "0px",
       opacity: 0,
-      transition: {
-        delay: 0.2,
-        duration: 0.4,
-      },
     },
     visible: {
-      height: "150px",
+      height: "120px",
       opacity: 1,
       transition: {
         height: { duration: 0.5, delay: 0 },
@@ -43,54 +44,53 @@ export const CustomizeForm = ({ isCustomize }: IProps) => {
       },
     },
   };
+  const containerVariatns = {
+    hidden: {
+      opacity: 0,
+    },
+    visible: {
+      opacity: 1,
+      transition: {
+        delay: 0.4,
+      },
+    },
+  };
   return (
     <>
       {isCustomize && (
-        <StyledCustomizeForm
-          as={motion.div}
-          variants={variants}
-          initial="hidden"
-          animate="visible"
-        >
-          <StyledInputContainer>
-            <StyledCustomizeLabel>
-              Delete link after first use
-            </StyledCustomizeLabel>
-            <CustomToggle
-              type="deleteAfterRead"
-              customSettings={customSettings}
-              setCustomSettings={setCustomSettings}
-            />
-          </StyledInputContainer>
-          <StyledInputContainer>
-            <StyledCustomizeLabel>Custom Link</StyledCustomizeLabel>
-            <LinkInput
-              customSettings={customSettings}
-              type="customUrl"
-              placeholder="Leave for default"
-              setCustomSettings={setCustomSettings}
-            />
-          </StyledInputContainer>
-          <StyledInputContainer>
-            <StyledCustomizeLabel>
-              Create link for analitics
-            </StyledCustomizeLabel>
-            <CustomToggle
-              type="analitics"
-              customSettings={customSettings}
-              setCustomSettings={setCustomSettings}
-            />
-          </StyledInputContainer>
-          <StyledInputContainer>
-            <StyledCustomizeLabel>Password</StyledCustomizeLabel>
-            <LinkInput
-              customSettings={customSettings}
-              type="password"
-              placeholder="Leave for no password"
-              setCustomSettings={setCustomSettings}
-            />
-          </StyledInputContainer>
-        </StyledCustomizeForm>
+        <SettingsContext.Provider value={{ customSettings, setCustomSettings }}>
+          <StyledCustomizeForm
+            as={motion.div}
+            variants={formVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <StyledInputContainer as={motion.div} variants={containerVariatns}>
+              <StyledCustomizeLabel as={motion.label}>
+                Delete link after first use
+              </StyledCustomizeLabel>
+              <CustomToggle type="deleteAfterRead" />
+            </StyledInputContainer>
+            <StyledInputContainer as={motion.div} variants={containerVariatns}>
+              <StyledCustomizeLabel as={motion.label}>
+                Custom Link
+              </StyledCustomizeLabel>
+              <LinkInput type="customUrl" placeholder="Leave for default" />
+            </StyledInputContainer>
+            <StyledInputContainer as={motion.div} variants={containerVariatns}>
+              <StyledCustomizeLabel as={motion.label}>
+                Create link for analitics
+              </StyledCustomizeLabel>
+              <CustomToggle type="analitics" />
+            </StyledInputContainer>
+            <StyledInputContainer as={motion.div} variants={containerVariatns}>
+              <StyledCustomizeLabel as={motion.label}>
+                Password
+              </StyledCustomizeLabel>
+              <LinkInput type="password" placeholder="Leave for no password" />
+            </StyledInputContainer>
+          </StyledCustomizeForm>
+        </SettingsContext.Provider>
       )}
     </>
   );
