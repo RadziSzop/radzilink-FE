@@ -1,7 +1,11 @@
 import { motion } from "framer-motion";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import {
+  IContext,
+  ICustomSettings,
+  SettingsContext,
+} from "../../../../views/MainPage/MainPage";
 import { StyledHandle, StyledSwitch } from "./styledCustomToggle";
-import { IContext, ICustomSettings, SettingsContext } from "../customizeForm";
 interface IProps {
   type: "deleteAfterRead" | "analitics";
 }
@@ -9,7 +13,9 @@ export const CustomToggle = ({ type }: IProps) => {
   const settingsContext: IContext | null = useContext(SettingsContext);
   if (!settingsContext) return null;
   const { customSettings, setCustomSettings } = settingsContext;
-
+  useEffect(() => {
+    console.log(customSettings);
+  }, [customSettings]);
   return (
     <StyledSwitch
       as={motion.div}
@@ -23,8 +29,8 @@ export const CustomToggle = ({ type }: IProps) => {
       }}
     >
       <StyledHandle
-        as={motion.div}
         layout
+        as={motion.div}
         transition={{
           type: "spring",
           stiffness: 650,

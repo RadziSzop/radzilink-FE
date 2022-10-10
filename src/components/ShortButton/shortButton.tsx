@@ -1,10 +1,17 @@
 import { StyledShortButton, StyledButtonText } from "./styledShortButton";
 import { motion, useAnimationControls } from "framer-motion";
-import { z } from "zod";
 import axios from "axios";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useMorph } from "../../hooks/useMorph";
 import { notification } from "../Notification/notification";
+import { IContext, SettingsContext } from "../../views/MainPage/MainPage";
+import { validateCustomSettings, validateLinkBar } from "./newLinkValidation";
 
 interface IProps {
   copyUrl: boolean;
@@ -12,32 +19,30 @@ interface IProps {
   isLoading: boolean;
   setCopyUrl: React.Dispatch<React.SetStateAction<boolean>>;
   setLinkBarValue: React.Dispatch<React.SetStateAction<string>>;
-  setValidationError: Dispatch<SetStateAction<string>>;
+  setLinkBarError: Dispatch<SetStateAction<string>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setCustomSettingsError: Dispatch<SetStateAction<string>>;
 }
 export const ShortButton = ({
   linkBarValue,
   copyUrl,
   isLoading,
   setLinkBarValue,
-  setValidationError,
+  setLinkBarError,
   setCopyUrl,
   setIsLoading,
+  setCustomSettingsError,
 }: IProps) => {
   const [buttonText, setButtonText] = useState<string>("Short me!");
   const { NotificationProvider, notify } = notification();
   const [shortenedUrl, setShortenedUrl] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
   const animationControler = useAnimationControls();
-
+  const settingsContext: IContext | null = useContext(SettingsContext);
+  if (!settingsContext) return null;
+  const { customSettings } = settingsContext;
   const morphUrl = useMorph();
-  const regex =
-    /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
-  const linkBarSchema = z
-    .string()
-    .regex(regex)
-    .max(8192, "Url is too long!")
-    .trim();
+
   const ShortButtonVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -84,40 +89,46 @@ export const ShortButton = ({
   }, [copyUrl]);
   useEffect(() => {
     animationControler.start("visible");
+    validateCustomSettings(customSettings);
   }, []);
-
-  const validateInput = async () => {
-    const linkValidation = await linkBarSchema.safeParseAsync(
-      linkBarValue.includes("https://") || linkBarValue.includes("http://")
-        ? linkBarValue
-        : `https://${linkBarValue}`
+  const handleSubmit = async () => {
+    const { customSettingsErrors, normalizedCustomSettings } =
+      await validateCustomSettings(customSettings);
+    const { linkBarErrors, normalizedLinkBarValue } = await validateLinkBar(
+      linkBarValue
     );
-    if (!linkValidation.success) {
-      setValidationError("Url is invalid!");
-      animationControler.start("error");
-      setIsError(true);
-      setTimeout(() => {
-        animationControler.start("visible");
-        setIsError(false);
-      }, 1000);
-      return;
-    } else {
-      setValidationError("");
+    console.log({ customSettingsErrors, linkBarErrors });
+    if (linkBarErrors) {
+      setLinkBarError(linkBarErrors);
     }
-    setIsLoading(true);
-    axios
-      .post("http://localhost:3000/url ", {
-        url: linkValidation.data,
-      })
-      .then(function (response) {
-        setShortenedUrl(`localhost:5173/${response.data.encodedUrlIndex}`);
-      })
-      .catch(function (error) {
-        setIsLoading(false);
-        setValidationError(error.message);
-      });
+    if (customSettingsErrors) {
+      setCustomSettingsError(customSettingsErrors);
+    }
+    if (linkBarErrors || customSettingsErrors) {
+      setIsError(true);
+      await animationControler.start("error");
+      animationControler.start("visible");
+      setIsError(false);
+    } else {
+      setIsLoading(true);
+      // console.log({ linkBarValue, normalizedCustomSettings });
+      axios
+        .post("http://localhost:3000/url ", {
+          url: normalizedLinkBarValue,
+          ...normalizedCustomSettings,
+        })
+        .then(function (response) {
+          setShortenedUrl(`localhost:5173/${response.data.encodedUrlIndex}`);
+          setCustomSettingsError("");
+          setLinkBarError("");
+        })
+        .catch(function (error) {
+          setIsLoading(false);
+          // notify(error.message);
+          throw new Error(error);
+        });
+    }
   };
-
   return (
     <>
       <StyledShortButton
@@ -127,11 +138,10 @@ export const ShortButton = ({
           if (!isError) {
             if (copyUrl) {
               await navigator.clipboard.writeText(shortenedUrl);
-              await notify();
               setCopyUrl(false);
-              // TODO: hide copy button faster;
+              notify("Copied!");
             } else {
-              validateInput();
+              handleSubmit();
             }
           }
         }}
@@ -157,7 +167,7 @@ export const ShortButton = ({
       >
         <StyledButtonText>{buttonText}</StyledButtonText>
       </StyledShortButton>
-      <NotificationProvider message="Copied!" time={1400} />
+      <NotificationProvider time={1500} />
     </>
   );
 };

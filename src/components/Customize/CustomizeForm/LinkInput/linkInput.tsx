@@ -1,5 +1,9 @@
 import { useContext } from "react";
-import { IContext, ICustomSettings, SettingsContext } from "../customizeForm";
+import {
+  IContext,
+  ICustomSettings,
+  SettingsContext,
+} from "../../../../views/MainPage/MainPage";
 import { StyledCustomInput } from "./styledLinkInput";
 interface IProps {
   type: "customUrl" | "password";

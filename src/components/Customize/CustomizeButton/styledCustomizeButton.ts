@@ -6,7 +6,7 @@ export const StyledCustomizeButton = styled.div`
   width: 100px;
   background-color: #e2654a;
   padding: 5px 10px;
-  border-radius: 50px;
+  border-radius: 20px;
   color: white;
   font-weight: 600;
 `;

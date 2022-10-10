@@ -1,12 +1,23 @@
 import { motion, useAnimationControls } from "framer-motion";
+import { useEffect, useState } from "react";
+
 import { NotificationContainer } from "./styledNotification";
 interface IProps {
   time: number;
-  message: string;
 }
 export const notification = () => {
   const animationControler = useAnimationControls();
-  const NotificationProvider = ({ message, time }: IProps) => {
+  const [message, setMessage] = useState<string>("");
+  useEffect(() => {
+    if (message) {
+      setTimeout(async () => {
+        await animationControler.start("visible");
+        await animationControler.start("hidden");
+        setMessage("");
+      }, 50);
+    }
+  }, [message]);
+  const NotificationProvider = ({ time }: IProps) => {
     const NotificationVariants = {
       hidden: {
         opacity: 0,
@@ -19,22 +30,21 @@ export const notification = () => {
         transition: { delay: 0.1, type: "spring", stiffness: 200 },
       },
     };
-
     return (
-      <NotificationContainer
-        as={motion.div}
-        variants={NotificationVariants}
-        animate={animationControler}
-        initial="hidden"
-      >
-        {message}
-      </NotificationContainer>
+      <>
+        <NotificationContainer
+          as={motion.div}
+          variants={NotificationVariants}
+          animate={animationControler}
+          initial="hidden"
+        >
+          {message}
+        </NotificationContainer>
+      </>
     );
   };
-
-  const notify = async () => {
-    await animationControler.start("visible");
-    await animationControler.start("hidden");
+  const notify = (message: string) => {
+    setMessage(message);
   };
   return { NotificationProvider, notify };
 };
