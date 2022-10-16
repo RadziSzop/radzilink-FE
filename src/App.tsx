@@ -9,7 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/404" element={<Page404 />} />
-        <Route path="/:url" element={<RedirectPage />} />
+        <Route path="/:index" element={<RedirectPage />} />
       </Routes>
     </div>
   );

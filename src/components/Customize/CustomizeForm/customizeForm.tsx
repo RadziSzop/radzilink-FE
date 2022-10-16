@@ -47,39 +47,39 @@ export const CustomizeForm = ({ isCustomize }: IProps) => {
   };
   return (
     <>
-      {isCustomize && (
-        <StyledCustomizeForm
-          as={motion.div}
-          variants={formVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <StyledInputContainer as={motion.div} variants={containerVariatns}>
-            <StyledCustomizeLabel as={motion.label}>
-              Delete link after first use
-            </StyledCustomizeLabel>
-            <CustomToggle type="deleteAfterRead" />
-          </StyledInputContainer>
-          <StyledInputContainer as={motion.div} variants={containerVariatns}>
-            <StyledCustomizeLabel as={motion.label}>
-              Custom Link
-            </StyledCustomizeLabel>
-            <LinkInput type="customUrl" placeholder="Leave for default" />
-          </StyledInputContainer>
-          <StyledInputContainer as={motion.div} variants={containerVariatns}>
-            <StyledCustomizeLabel as={motion.label}>
-              Create link for analitics
-            </StyledCustomizeLabel>
-            <CustomToggle type="analitics" />
-          </StyledInputContainer>
-          <StyledInputContainer as={motion.div} variants={containerVariatns}>
-            <StyledCustomizeLabel as={motion.label}>
-              Password
-            </StyledCustomizeLabel>
-            <LinkInput type="password" placeholder="Leave for no password" />
-          </StyledInputContainer>
-        </StyledCustomizeForm>
-      )}
+      {/* {isCustomize && ( */}
+      <StyledCustomizeForm
+        as={motion.div}
+        variants={formVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <StyledInputContainer as={motion.div} variants={containerVariatns}>
+          <StyledCustomizeLabel as={motion.label}>
+            Delete link after first use
+          </StyledCustomizeLabel>
+          <CustomToggle type="deleteAfterRead" />
+        </StyledInputContainer>
+        <StyledInputContainer as={motion.div} variants={containerVariatns}>
+          <StyledCustomizeLabel as={motion.label}>
+            Custom Link
+          </StyledCustomizeLabel>
+          <LinkInput type="customUrl" placeholder="Leave for default" />
+        </StyledInputContainer>
+        <StyledInputContainer as={motion.div} variants={containerVariatns}>
+          <StyledCustomizeLabel as={motion.label}>
+            Create link for analitics
+          </StyledCustomizeLabel>
+          <CustomToggle type="analitics" />
+        </StyledInputContainer>
+        <StyledInputContainer as={motion.div} variants={containerVariatns}>
+          <StyledCustomizeLabel as={motion.label}>
+            Password
+          </StyledCustomizeLabel>
+          <LinkInput type="password" placeholder="Leave for no password" />
+        </StyledInputContainer>
+      </StyledCustomizeForm>
+      {/* )} */}
     </>
   );
 };

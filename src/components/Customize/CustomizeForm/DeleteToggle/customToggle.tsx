@@ -13,9 +13,7 @@ export const CustomToggle = ({ type }: IProps) => {
   const settingsContext: IContext | null = useContext(SettingsContext);
   if (!settingsContext) return null;
   const { customSettings, setCustomSettings } = settingsContext;
-  useEffect(() => {
-    console.log(customSettings);
-  }, [customSettings]);
+
   return (
     <StyledSwitch
       as={motion.div}
@@ -29,8 +27,8 @@ export const CustomToggle = ({ type }: IProps) => {
       }}
     >
       <StyledHandle
-        layout
         as={motion.div}
+        layout
         transition={{
           type: "spring",
           stiffness: 650,

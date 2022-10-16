@@ -22,6 +22,7 @@ export const notification = () => {
       hidden: {
         opacity: 0,
         y: -10,
+        x: "-50%",
         transition: { type: "spring", delay: time / 1000 },
       },
       visible: {

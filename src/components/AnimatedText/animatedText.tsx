@@ -5,6 +5,7 @@ interface IProps {
   colorFrom?: string;
   colorTo?: string;
   fontSize?: string;
+  textAlign?: "center" | "end" | "justify" | "left" | "right" | "start";
 }
 
 export const AnimatedH1 = ({
@@ -12,6 +13,7 @@ export const AnimatedH1 = ({
   colorFrom = "#e9d8c9",
   colorTo = "#774e2f",
   fontSize = "3rem",
+  textAlign = "center",
 }: IProps) => {
   const container = {
     visible: {
@@ -37,13 +39,15 @@ export const AnimatedH1 = ({
   for (const [, item] of splitWords.entries()) {
     words.push(item.split(""));
   }
-  for (const word of words) {
-    word.push("\u00A0");
+  if (words.length > 1) {
+    for (const word of words) {
+      word.push("\u00A0");
+    }
   }
 
   return (
     <motion.div initial="hidden" animate="visible" variants={container} layout>
-      <StyledAnimatedH1 fontSize={fontSize}>
+      <StyledAnimatedH1 fontSize={fontSize} textAlign={textAlign}>
         {words.map((word: string[], index: number) => {
           return (
             <div key={index} style={{ display: "inline-block" }}>

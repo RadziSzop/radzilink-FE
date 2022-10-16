@@ -33,7 +33,7 @@ export const ShortButton = ({
   setIsLoading,
   setCustomSettingsError,
 }: IProps) => {
-  const [buttonText, setButtonText] = useState<string>("Short me!");
+  const [buttonText, setButtonText] = useState<string>("....");
   const { NotificationProvider, notify } = notification();
   const [shortenedUrl, setShortenedUrl] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
@@ -69,22 +69,11 @@ export const ShortButton = ({
   };
 
   useEffect(() => {
-    if (shortenedUrl) {
-      morphUrl(
-        linkBarValue,
-        shortenedUrl,
-        setLinkBarValue,
-        setIsLoading,
-        setCopyUrl
-      );
-    }
-  }, [shortenedUrl]);
-
-  useEffect(() => {
     if (copyUrl) {
       setButtonText("Copy");
     } else {
       setButtonText("Short me!");
+      setButtonText("...");
     }
   }, [copyUrl]);
   useEffect(() => {
@@ -111,20 +100,27 @@ export const ShortButton = ({
       setIsError(false);
     } else {
       setIsLoading(true);
-      // console.log({ linkBarValue, normalizedCustomSettings });
       axios
         .post("http://localhost:3000/url ", {
-          url: normalizedLinkBarValue,
+          destinationUrl: normalizedLinkBarValue,
           ...normalizedCustomSettings,
         })
         .then(function (response) {
-          setShortenedUrl(`localhost:5173/${response.data.encodedUrlIndex}`);
+          console.log(response);
+          morphUrl(
+            linkBarValue,
+            response.data.link,
+            setLinkBarValue,
+            setIsLoading,
+            setCopyUrl
+          );
+          setShortenedUrl(response.data.link);
           setCustomSettingsError("");
           setLinkBarError("");
         })
         .catch(function (error) {
           setIsLoading(false);
-          // notify(error.message);
+          notify(error.message);
           throw new Error(error);
         });
     }

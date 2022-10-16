@@ -5,8 +5,8 @@ interface IProps {
 export const StyledSwitch = styled.div<IProps>`
   width: 52.5px;
   height: 32.5px;
+  background-color: red;
   background-color: ${(props) =>
-    // props.customSettings ? "rgba(0, 200, 0, 0.4)" : "rgba(155, 155, 155, 0.4)"};
     props.customSettings ? "rgb(237, 193, 145)" : "rgba(155, 155, 155, 0.4)"};
   display: flex;
   align-items: center;
