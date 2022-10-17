@@ -33,7 +33,7 @@ export const ShortButton = ({
   setIsLoading,
   setCustomSettingsError,
 }: IProps) => {
-  const [buttonText, setButtonText] = useState<string>("....");
+  const [buttonText, setButtonText] = useState<string>("Short Me!");
   const { NotificationProvider, notify } = notification();
   const [shortenedUrl, setShortenedUrl] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
@@ -73,7 +73,6 @@ export const ShortButton = ({
       setButtonText("Copy");
     } else {
       setButtonText("Short me!");
-      setButtonText("...");
     }
   }, [copyUrl]);
   useEffect(() => {

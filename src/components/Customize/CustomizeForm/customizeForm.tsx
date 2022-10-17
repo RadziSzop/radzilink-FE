@@ -47,7 +47,6 @@ export const CustomizeForm = ({ isCustomize }: IProps) => {
   };
   return (
     <>
-      {/* {isCustomize && ( */}
       <StyledCustomizeForm
         as={motion.div}
         variants={formVariants}
@@ -79,7 +78,6 @@ export const CustomizeForm = ({ isCustomize }: IProps) => {
           <LinkInput type="password" placeholder="Leave for no password" />
         </StyledInputContainer>
       </StyledCustomizeForm>
-      {/* )} */}
     </>
   );
 };

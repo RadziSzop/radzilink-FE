@@ -13,13 +13,16 @@ export const StyledRedirectSpan = styled.span`
 export const StyledPasswordHeader = styled.h2`
   color: white;
   font-size: 3rem;
-  /* text-align: end; */
 `;
 
 export const StyledPasswordSpan = styled.span`
-  /* text-align: right; */
-  /* font-size: 3.5rem; */
   font-size: 3rem;
+  display: inline-block;
+  margin-left: 1rem;
   font-weight: 700;
   color: #dd6d56;
+`;
+export const StyledPassTextContainer = styled.div`
+  display: flex;
+  width: 490px;
 `;

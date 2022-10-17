@@ -38,15 +38,15 @@ export const MainPage = () => {
   return (
     <SettingsContext.Provider value={{ customSettings, setCustomSettings }}>
       <StyledContainer>
-        <div
+        {/* <div
           onClick={() => {
             setIsCustomize((prevState: boolean) => !prevState);
           }}
-        >
-          <AnimatedH1 fontSize="3.5rem" colorTo="rgb(221, 109, 86)">
-            {/* Link Shortener */}....
-          </AnimatedH1>
-        </div>
+        > */}
+        <AnimatedH1 fontSize="3.5rem" colorTo="rgb(221, 109, 86)">
+          Link Shortener
+        </AnimatedH1>
+        {/* </div> */}
         <StyledLinkBarContainer as={motion.div}>
           <LinkBar
             setLinkBarError={setLinkBarError}
@@ -55,10 +55,10 @@ export const MainPage = () => {
         </StyledLinkBarContainer>
         <ErrorText errorText={linkBarError} />
         <StyledCustomizeContainer>
-          {/* <CustomizeButton
+          <CustomizeButton
             setIsCustomize={setIsCustomize}
             isCustomize={isCustomize}
-          /> */}
+          />
           {isCustomize && <CustomizeForm isCustomize={isCustomize} />}
         </StyledCustomizeContainer>
       </StyledContainer>

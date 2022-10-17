@@ -19,6 +19,7 @@ export const StyledCustomizeForm = styled.div`
   border-radius: 10px;
   flex-wrap: wrap;
   background-color: #ffffff;
+  box-shadow: inset 0px 0px 1px 0px #cccccc;
   position: relative;
 `;
 export const StyledCustomizeLabel = styled.p`
