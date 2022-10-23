@@ -5,6 +5,7 @@ interface IProps {
 export const StyledSwitch = styled.div<IProps>`
   width: 52.5px;
   height: 32.5px;
+  position: relative;
   background-color: red;
   background-color: ${(props) =>
     props.customSettings ? "rgb(237, 193, 145)" : "rgba(155, 155, 155, 0.4)"};
@@ -14,11 +15,11 @@ export const StyledSwitch = styled.div<IProps>`
   border-radius: 25px;
   padding: 4px;
   cursor: pointer;
-  justify-content: ${(props) =>
-    props.customSettings ? "flex-end" : "flex-start"};
+  justify-content: ${({ customSettings }) =>
+    customSettings ? "end" : "start"};
 `;
-
-export const StyledHandle = styled.div`
+// WORKAROUND because of framer layout bug
+export const StyledHandle = styled.div<IProps>`
   width: 25px;
   height: 25px;
   background-color: white;

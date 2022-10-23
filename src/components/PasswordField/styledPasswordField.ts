@@ -1,6 +1,6 @@
 import styled from "styled-components";
 interface IProps {
-  color: any;
+  fontColor: boolean;
 }
 export const StyledPasswordField = styled.input<IProps>`
   padding: 0.8rem 3rem 0.8rem 1.5rem;
@@ -9,7 +9,7 @@ export const StyledPasswordField = styled.input<IProps>`
   width: 500px;
   box-shadow: inset 0px 0px 1px 0px #cccccc;
   font-size: 1.2rem;
-  color: ${(props) => (props.color ? "#ff0000" : "#131313")};
+  color: ${(props) => (props.fontColor ? "#ff0000" : "#131313")};
   transition: color 0.3s ease-in-out;
   letter-spacing: 1.5px;
   :focus {
@@ -19,7 +19,7 @@ export const StyledPasswordField = styled.input<IProps>`
     color: none;
   }
   ::placeholder {
-    color: ${(props) => (props.color ? "#ff0000" : "#757575")};
+    color: ${(props) => (props.fontColor ? "#ff0000" : "#757575")};
     transition: color 0.2s linear;
   }
 `;

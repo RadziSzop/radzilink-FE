@@ -1,13 +1,12 @@
 import { motion } from "framer-motion";
-import { Dispatch, SetStateAction, useMemo } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { StyledCustomizeButton } from "./styledCustomizeButton";
 
 interface IProps {
   setIsCustomize: Dispatch<SetStateAction<boolean>>;
-  isCustomize: boolean;
 }
 
-export const CustomizeButton = ({ setIsCustomize, isCustomize }: IProps) => {
+export const CustomizeButton = ({ setIsCustomize }: IProps) => {
   const variants = {
     hidden: { opacity: 0 },
     visible: {

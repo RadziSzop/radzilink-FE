@@ -16,6 +16,7 @@ export const StyledCustomizeForm = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   width: 100%;
+  max-width: 700px;
   border-radius: 10px;
   flex-wrap: wrap;
   background-color: #ffffff;

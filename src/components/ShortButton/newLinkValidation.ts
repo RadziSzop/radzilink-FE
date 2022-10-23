@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
 import { z } from "zod";
 import { ICustomSettings } from "../Customize/CustomizeForm/customizeForm";
 

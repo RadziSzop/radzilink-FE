@@ -1,7 +1,8 @@
 :root {
-  font-family: BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;  background-color: #e9d8c9;
-}
+   font-family: BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;  
+    background-color: #e9d8c9; 
+  }
 *{
   margin: 0;
   padding: 0;

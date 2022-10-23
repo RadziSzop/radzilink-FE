@@ -25,6 +25,9 @@ export const SettingsContext = createContext<IContext | null>(null);
 export const MainPage = () => {
   const [linkBarError, setLinkBarError] = useState<string>("");
   const [customSettingsError, setCustomSettingsError] = useState<string>("");
+  //TODO customSettingsError
+  console.log(customSettingsError);
+
   const [isCustomize, setIsCustomize] = useState<boolean>(false);
   console.log(isCustomize);
 
@@ -55,12 +58,9 @@ export const MainPage = () => {
         </StyledLinkBarContainer>
         <ErrorText errorText={linkBarError} />
         <StyledCustomizeContainer>
-          <CustomizeButton
-            setIsCustomize={setIsCustomize}
-            isCustomize={isCustomize}
-          />
-          {isCustomize && <CustomizeForm isCustomize={isCustomize} />}
+          <CustomizeButton setIsCustomize={setIsCustomize} />
         </StyledCustomizeContainer>
+        {isCustomize && <CustomizeForm />}
       </StyledContainer>
     </SettingsContext.Provider>
   );

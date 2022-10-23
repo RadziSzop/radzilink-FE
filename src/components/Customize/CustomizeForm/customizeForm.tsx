@@ -15,17 +15,12 @@ export interface ICustomSettings {
   analitics: boolean;
 }
 
-interface IProps {
-  isCustomize: boolean;
-}
-export const CustomizeForm = ({ isCustomize }: IProps) => {
+export const CustomizeForm = () => {
   const formVariants = {
     hidden: {
-      height: "0px",
       opacity: 0,
     },
     visible: {
-      height: "120px",
       opacity: 1,
       transition: {
         height: { duration: 0.5, delay: 0 },
@@ -59,18 +54,21 @@ export const CustomizeForm = ({ isCustomize }: IProps) => {
           </StyledCustomizeLabel>
           <CustomToggle type="deleteAfterRead" />
         </StyledInputContainer>
+
         <StyledInputContainer as={motion.div} variants={containerVariatns}>
           <StyledCustomizeLabel as={motion.label}>
             Custom Link
           </StyledCustomizeLabel>
           <LinkInput type="customUrl" placeholder="Leave for default" />
         </StyledInputContainer>
+
         <StyledInputContainer as={motion.div} variants={containerVariatns}>
           <StyledCustomizeLabel as={motion.label}>
             Create link for analitics
           </StyledCustomizeLabel>
           <CustomToggle type="analitics" />
         </StyledInputContainer>
+
         <StyledInputContainer as={motion.div} variants={containerVariatns}>
           <StyledCustomizeLabel as={motion.label}>
             Password

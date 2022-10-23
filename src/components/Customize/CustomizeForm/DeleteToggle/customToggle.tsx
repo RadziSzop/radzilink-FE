@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import {
   IContext,
   ICustomSettings,
@@ -13,7 +13,6 @@ export const CustomToggle = ({ type }: IProps) => {
   const settingsContext: IContext | null = useContext(SettingsContext);
   if (!settingsContext) return null;
   const { customSettings, setCustomSettings } = settingsContext;
-
   return (
     <StyledSwitch
       as={motion.div}
@@ -27,8 +26,9 @@ export const CustomToggle = ({ type }: IProps) => {
       }}
     >
       <StyledHandle
-        as={motion.div}
+        customSettings={customSettings[type]}
         layout
+        as={motion.div}
         transition={{
           type: "spring",
           stiffness: 650,

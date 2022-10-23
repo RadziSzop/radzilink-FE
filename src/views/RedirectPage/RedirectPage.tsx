@@ -2,7 +2,6 @@ import axios from "axios";
 import { motion, useAnimationControls } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
 import { AnimatedH1 } from "../../components/AnimatedText/animatedText";
 import { PasswordField } from "../../components/PasswordField/passwordField";
 import {

@@ -4,7 +4,6 @@ import {
   StyledSvg,
 } from "./styledPasswordField";
 import lock from "../../assets/lock.svg";
-import unlock from "../../assets/unlock.svg";
 import { AnimationControls, motion } from "framer-motion";
 import { ChangeEvent, useState } from "react";
 import axios from "axios";
@@ -81,7 +80,7 @@ export const PasswordField = ({ animationControler }: IProps) => {
         type="password"
         placeholder="Enter passwrod"
         value={password}
-        color={isWrongPassword}
+        fontColor={Boolean(isWrongPassword)}
         onInput={(e: ChangeEvent<HTMLInputElement>) => {
           setPassword(e.target.value);
         }}
