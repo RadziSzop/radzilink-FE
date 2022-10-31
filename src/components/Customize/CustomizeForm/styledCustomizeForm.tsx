@@ -14,7 +14,7 @@ export const StyledCustomizeForm = styled.div`
   padding: 0.5rem 1rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  /* grid-template-rows: 1fr 1fr; */
   width: 100%;
   max-width: 700px;
   border-radius: 10px;
@@ -22,8 +22,17 @@ export const StyledCustomizeForm = styled.div`
   background-color: #ffffff;
   box-shadow: inset 0px 0px 1px 0px #cccccc;
   position: relative;
+  > * {
+    &:first-child {
+      border-right: 2px solid #f1f1f1;
+    }
+  }
 `;
 export const StyledCustomizeLabel = styled.p`
+  flex-grow: 1;
   color: #4c4c4c;
   font-weight: 600;
+`;
+export const StyledCustomizeInput = styled.input`
+  margin-right: 1rem;
 `;

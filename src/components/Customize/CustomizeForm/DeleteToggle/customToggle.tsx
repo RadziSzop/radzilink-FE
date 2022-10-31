@@ -1,16 +1,19 @@
 import { motion } from "framer-motion";
 import { useContext } from "react";
 import {
-  IContext,
-  ICustomSettings,
-  SettingsContext,
-} from "../../../../views/MainPage/MainPage";
+  CustomSettings,
+  CustomSettingsContext,
+  CustomToggleTypes,
+} from "../../../../types/customSettings";
+import { SettingsContext } from "../../../../views/MainPage/MainPage";
 import { StyledHandle, StyledSwitch } from "./styledCustomToggle";
 interface IProps {
-  type: "deleteAfterRead" | "analitics";
+  type: CustomToggleTypes;
+  disable?: CustomToggleTypes;
 }
-export const CustomToggle = ({ type }: IProps) => {
-  const settingsContext: IContext | null = useContext(SettingsContext);
+export const CustomToggle = ({ type, disable }: IProps) => {
+  const settingsContext: CustomSettingsContext | null =
+    useContext(SettingsContext);
   if (!settingsContext) return null;
   const { customSettings, setCustomSettings } = settingsContext;
   return (
@@ -18,9 +21,12 @@ export const CustomToggle = ({ type }: IProps) => {
       as={motion.div}
       customSettings={customSettings[type]}
       onClick={() => {
-        setCustomSettings((prevState: ICustomSettings) => {
+        setCustomSettings((prevState: CustomSettings) => {
           const newSettings = { ...prevState };
           newSettings[type] = !newSettings[type];
+          if (disable) {
+            newSettings[disable] = false;
+          }
           return newSettings;
         });
       }}

@@ -10,32 +10,30 @@ import { ErrorText } from "../../components/ErrorText/errorText";
 import { createContext, useState } from "react";
 import { CustomizeButton } from "../../components/Customize/CustomizeButton/customizeButton";
 import { CustomizeForm } from "../../components/Customize/CustomizeForm/customizeForm";
-export interface ICustomSettings {
-  customUrl: string | null;
-  password: string | null;
-  deleteAfterRead: boolean;
-  analitics: boolean;
-}
-export interface IContext {
-  customSettings: ICustomSettings;
-  setCustomSettings: React.Dispatch<React.SetStateAction<ICustomSettings>>;
-}
-export const SettingsContext = createContext<IContext | null>(null);
+import {
+  CustomSettings,
+  CustomSettingsContext,
+} from "../../types/customSettings";
+
+export const SettingsContext = createContext<CustomSettingsContext | null>(
+  null
+);
 
 export const MainPage = () => {
   const [linkBarError, setLinkBarError] = useState<string>("");
   const [customSettingsError, setCustomSettingsError] = useState<string>("");
-  //TODO customSettingsError
+  //TODO: implement customSettingsError
   console.log(customSettingsError);
-
   const [isCustomize, setIsCustomize] = useState<boolean>(false);
-  console.log(isCustomize);
-
-  const [customSettings, setCustomSettings] = useState<ICustomSettings>({
+  const [customSettings, setCustomSettings] = useState<CustomSettings>({
     customUrl: "",
     password: "",
     deleteAfterRead: false,
+    deleteAfterDate: false,
+    deleteAfterTime: false,
     analitics: false,
+    date: "",
+    time: "",
   });
 
   return (

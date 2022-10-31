@@ -30,10 +30,7 @@ export const RedirectPage = () => {
     axios
       .get(`http://localhost:3000/url/${index}`)
       .then(({ data }) => {
-        console.log(data);
         if (!data.isProtected) {
-          console.log(data.data.destinationUrl);
-
           window.location.replace(data.data.destinationUrl);
         } else {
           setIsProtected(true);
@@ -43,7 +40,6 @@ export const RedirectPage = () => {
         if (error.response.status === 404) {
           window.location.replace("http://localhost:5173/404");
         }
-
         throw new Error(await error);
       });
   };

@@ -10,8 +10,9 @@ import {
 } from "react";
 import { useMorph } from "../../hooks/useMorph";
 import { notification } from "../Notification/notification";
-import { IContext, SettingsContext } from "../../views/MainPage/MainPage";
+import { SettingsContext } from "../../views/MainPage/MainPage";
 import { validateCustomSettings, validateLinkBar } from "./newLinkValidation";
+import { CustomSettingsContext } from "../../types/customSettings";
 
 interface IProps {
   copyUrl: boolean;
@@ -38,7 +39,8 @@ export const ShortButton = ({
   const [shortenedUrl, setShortenedUrl] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
   const animationControler = useAnimationControls();
-  const settingsContext: IContext | null = useContext(SettingsContext);
+  const settingsContext: CustomSettingsContext | null =
+    useContext(SettingsContext);
   if (!settingsContext) return null;
   const { customSettings } = settingsContext;
   const morphUrl = useMorph();
@@ -85,7 +87,6 @@ export const ShortButton = ({
     const { linkBarErrors, normalizedLinkBarValue } = await validateLinkBar(
       linkBarValue
     );
-    console.log({ customSettingsErrors, linkBarErrors });
     if (linkBarErrors) {
       setLinkBarError(linkBarErrors);
     }
@@ -105,7 +106,6 @@ export const ShortButton = ({
           ...normalizedCustomSettings,
         })
         .then(function (response) {
-          console.log(response);
           morphUrl(
             linkBarValue,
             response.data.link,

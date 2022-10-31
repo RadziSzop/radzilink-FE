@@ -1,5 +1,8 @@
 import { z } from "zod";
-import { ICustomSettings } from "../Customize/CustomizeForm/customizeForm";
+import {
+  CustomSettings,
+  NormalizedCustomSettings,
+} from "../../types/customSettings";
 
 const regex =
   /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
@@ -42,17 +45,33 @@ const customSettingsShema = z.object({
     })
     .optional()
     .or(z.null()),
+  deleteAfterTime: z
+    .number({
+      invalid_type_error: "Delete after time must be a boolean",
+    })
+    .min(Math.floor(new Date().getTime() / 1000), "You can't set past date")
+    .optional()
+    .or(z.null()),
 });
 export const validateCustomSettings = async (
-  customSettings: ICustomSettings
+  customSettings: CustomSettings
 ) => {
-  const normalizedCustomSettings: ICustomSettings = { ...customSettings };
-  if (normalizedCustomSettings.customUrl === "") {
-    normalizedCustomSettings.customUrl = null;
+  let deleteTime: number | null = null;
+  if (customSettings.deleteAfterTime) {
+    deleteTime =
+      Math.floor(new Date().getTime() / 1000) +
+      Number(customSettings.time.split(":")[0]) * 60 * 60 +
+      Number(customSettings.time.split(":")[1]) * 60;
+  } else if (customSettings.deleteAfterDate) {
+    deleteTime = Math.floor(new Date(customSettings.date).getTime() / 1000);
   }
-  if (normalizedCustomSettings.password === "") {
-    normalizedCustomSettings.password = null;
-  }
+  const normalizedCustomSettings: NormalizedCustomSettings = {
+    customUrl: customSettings.customUrl ? customSettings.customUrl : null,
+    password: customSettings.password ? customSettings.password : null,
+    deleteAfterRead: customSettings.deleteAfterRead,
+    analitics: customSettings.analitics,
+    deleteTime: deleteTime,
+  };
   const customSettingsValidation = await customSettingsShema.safeParseAsync(
     normalizedCustomSettings
   );
