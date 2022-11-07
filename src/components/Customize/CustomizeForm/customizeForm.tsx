@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { CustomSettingsContext } from "../../../types/customSettings";
 import { SettingsContext } from "../../../views/MainPage/MainPage";
-
 import { CustomToggle } from "./DeleteToggle/customToggle";
 import { LinkInput } from "./LinkInput/linkInput";
 import {
