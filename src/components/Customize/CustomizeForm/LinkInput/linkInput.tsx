@@ -1,17 +1,19 @@
 import { useContext } from "react";
 import {
-  IContext,
-  ICustomSettings,
-  SettingsContext,
-} from "../../../../views/MainPage/MainPage";
+  CustomSettings,
+  CustomSettingsContext,
+  CustomTextTypes,
+} from "../../../../types/customSettings";
+import { SettingsContext } from "../../../../views/MainPage/MainPage";
 import { StyledCustomInput } from "./styledLinkInput";
 interface IProps {
-  type: "customUrl" | "password";
+  type: CustomTextTypes;
   placeholder: string;
 }
 
 export const LinkInput = ({ placeholder, type }: IProps) => {
-  const settingsContext: IContext | null = useContext(SettingsContext);
+  const settingsContext: CustomSettingsContext | null =
+    useContext(SettingsContext);
   if (!settingsContext) return null;
   const { customSettings, setCustomSettings } = settingsContext;
   return (
@@ -21,7 +23,7 @@ export const LinkInput = ({ placeholder, type }: IProps) => {
       placeholder={placeholder}
       type="text"
       onChange={(e) => {
-        setCustomSettings((prevState: ICustomSettings) => {
+        setCustomSettings((prevState: CustomSettings) => {
           const newSettings = { ...prevState };
           newSettings[type] = e.target.value;
           return newSettings;

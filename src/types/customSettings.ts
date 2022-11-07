@@ -1,6 +1,6 @@
 export interface CustomSettings {
-  customUrl: string | null;
-  password: string | null;
+  customUrl: string;
+  password: string;
   deleteAfterDate: boolean;
   deleteAfterTime: boolean;
   deleteAfterRead: boolean;
@@ -24,3 +24,4 @@ export type CustomToggleTypes =
   | "deleteAfterDate"
   | "analitics"
   | "deleteAfterTime";
+export type CustomTextTypes = "customUrl" | "password";
