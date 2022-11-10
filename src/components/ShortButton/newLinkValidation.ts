@@ -33,6 +33,13 @@ const customSettingsShema = z.object({
     .trim()
     .optional()
     .or(z.null()),
+  deleteTime: z
+    .number({
+      invalid_type_error: "Delete after time must be a boolean",
+    })
+    .min(Math.floor(new Date().getTime() / 1000), "You can't set past date")
+    .optional()
+    .or(z.null()),
   deleteAfterRead: z
     .boolean({
       invalid_type_error: "deleteAfterRead must be a boolean",
@@ -45,19 +52,14 @@ const customSettingsShema = z.object({
     })
     .optional()
     .or(z.null()),
-  deleteAfterTime: z
-    .number({
-      invalid_type_error: "Delete after time must be a boolean",
-    })
-    .min(Math.floor(new Date().getTime() / 1000), "You can't set past date")
-    .optional()
-    .or(z.null()),
 });
 export const validateCustomSettings = async (
   customSettings: CustomSettings
 ) => {
   let deleteTime: number | null = null;
   if (customSettings.deleteAfterTime) {
+    console.log(customSettings.time);
+
     deleteTime =
       Math.floor(new Date().getTime() / 1000) +
       Number(customSettings.time.split(":")[0]) * 60 * 60 +
@@ -70,8 +72,9 @@ export const validateCustomSettings = async (
     password: customSettings.password ? customSettings.password : null,
     deleteAfterRead: customSettings.deleteAfterRead,
     analitics: customSettings.analitics,
-    deleteTime: deleteTime,
+    deleteTime,
   };
+
   const customSettingsValidation = await customSettingsShema.safeParseAsync(
     normalizedCustomSettings
   );

@@ -3,7 +3,7 @@ import { Styled404Header, Styled404Span } from "./styled404Page";
 export const Page404 = () => {
   //TODO: Create time based progress Bar
   setTimeout(() => {
-    window.location.replace("http://localhost:5173");
+    window.location.replace(import.meta.env.VITE_FRONTURL);
   }, 4000);
   return (
     <>

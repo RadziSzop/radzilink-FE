@@ -37,7 +37,7 @@ export const PasswordField = ({ animationControler }: IProps) => {
   };
   const handleClick = async () => {
     axios
-      .post(`http://localhost:3000/url/${index}`, {
+      .post(`${import.meta.env.VITE_SERVERURL}/url/${index}`, {
         password: password,
       })
       .then(async ({ data }) => {

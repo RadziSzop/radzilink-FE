@@ -79,7 +79,6 @@ export const ShortButton = ({
   }, [copyUrl]);
   useEffect(() => {
     animationControler.start("visible");
-    validateCustomSettings(customSettings);
   }, []);
   const handleSubmit = async () => {
     const { customSettingsErrors, normalizedCustomSettings } =
@@ -87,12 +86,8 @@ export const ShortButton = ({
     const { linkBarErrors, normalizedLinkBarValue } = await validateLinkBar(
       linkBarValue
     );
-    if (linkBarErrors) {
-      setLinkBarError(linkBarErrors);
-    }
-    if (customSettingsErrors) {
-      setCustomSettingsError(customSettingsErrors);
-    }
+    setLinkBarError(linkBarErrors);
+    setCustomSettingsError(customSettingsErrors);
     if (linkBarErrors || customSettingsErrors) {
       setIsError(true);
       await animationControler.start("error");
@@ -100,8 +95,10 @@ export const ShortButton = ({
       setIsError(false);
     } else {
       setIsLoading(true);
+      console.log({ normalizedCustomSettings });
+
       axios
-        .post("http://localhost:3000/url ", {
+        .post(`${import.meta.env.VITE_SERVERURL}/url`, {
           destinationUrl: normalizedLinkBarValue,
           ...normalizedCustomSettings,
         })
