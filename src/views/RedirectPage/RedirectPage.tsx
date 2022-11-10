@@ -28,7 +28,7 @@ export const RedirectPage = () => {
   };
   const getUrlData = async () => {
     axios
-      .get(`http://localhost:3000/url/${index}`)
+      .get(`${import.meta.env.VITE_SERVERURL}/url/${index}`)
       .then(({ data }) => {
         if (!data.isProtected) {
           window.location.replace(data.data.destinationUrl);
@@ -38,7 +38,7 @@ export const RedirectPage = () => {
       })
       .catch(async (error) => {
         if (error.response.status === 404) {
-          window.location.replace("http://localhost:5173/404");
+          window.location.replace(`${import.meta.env.VITE_FRONTURL}/404`);
         }
         throw new Error(await error);
       });

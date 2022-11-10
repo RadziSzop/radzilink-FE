@@ -6,7 +6,7 @@ interface IProps {
 function ErrorText({ errorText }: IProps) {
   return (
     <StyledErrorTextContainer>
-      {errorText !== "" && (
+      {errorText && (
         <motion.p
           layout
           initial={{ opacity: 0, y: -10 }}

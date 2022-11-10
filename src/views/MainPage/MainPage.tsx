@@ -22,7 +22,7 @@ export const SettingsContext = createContext<CustomSettingsContext | null>(
 export const MainPage = () => {
   const [linkBarError, setLinkBarError] = useState<string>("");
   const [customSettingsError, setCustomSettingsError] = useState<string>("");
-  //TODO: implement customSettingsError
+  //TODO: merge errors
   console.log(customSettingsError);
   const [isCustomize, setIsCustomize] = useState<boolean>(false);
   const [customSettings, setCustomSettings] = useState<CustomSettings>({
@@ -48,7 +48,9 @@ export const MainPage = () => {
             setCustomSettingsError={setCustomSettingsError}
           />
         </StyledLinkBarContainer>
+        {/* TODO: fixed error display */}
         <ErrorText errorText={linkBarError} />
+        <ErrorText errorText={customSettingsError} />
         <StyledCustomizeContainer>
           <CustomizeButton setIsCustomize={setIsCustomize} />
         </StyledCustomizeContainer>
