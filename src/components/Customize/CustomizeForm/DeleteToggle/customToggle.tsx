@@ -10,8 +10,9 @@ import { StyledHandle, StyledSwitch } from "./styledCustomToggle";
 interface IProps {
   type: CustomToggleTypes;
   disable?: CustomToggleTypes;
+  disabled?: boolean;
 }
-export const CustomToggle = ({ type, disable }: IProps) => {
+export const CustomToggle = ({ type, disable, disabled }: IProps) => {
   const settingsContext: CustomSettingsContext | null =
     useContext(SettingsContext);
   if (!settingsContext) return null;
@@ -20,20 +21,24 @@ export const CustomToggle = ({ type, disable }: IProps) => {
     <StyledSwitch
       as={motion.div}
       customSettings={customSettings[type]}
+      disabled={disabled ?? false}
       onClick={() => {
-        setCustomSettings((prevState: CustomSettings) => {
-          const newSettings = { ...prevState };
-          newSettings[type] = !newSettings[type];
-          if (disable) {
-            newSettings[disable] = false;
-          }
-          return newSettings;
-        });
+        if (!disabled) {
+          setCustomSettings((prevState: CustomSettings) => {
+            const newSettings = { ...prevState };
+            newSettings[type] = !newSettings[type];
+            if (disable) {
+              newSettings[disable] = false;
+            }
+            return newSettings;
+          });
+        }
       }}
     >
       <StyledHandle
         customSettings={customSettings[type]}
         layout
+        disabled={disabled ?? false}
         as={motion.div}
         transition={{
           type: "spring",

@@ -4,21 +4,24 @@ import {
   NormalizedCustomSettings,
 } from "../../types/customSettings";
 
-const regex =
+const newLinkRegex =
   /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+const customUrlRegex = /^[a-zA-Z0-9]+$/;
+
 const linkBarSchema = z
   .string({
-    invalid_type_error: "CustomUrl must be a string",
+    invalid_type_error: "Url must be a string",
   })
   .min(1, "Url can't be empty!")
   .max(8192, "Url is too long!")
-  .regex(regex, "Url is invalid!")
+  .regex(newLinkRegex, "Url is invalid!")
   .trim();
 const customSettingsShema = z.object({
   customUrl: z
     .string({
       invalid_type_error: "CustomUrl must be a string",
     })
+    .regex(customUrlRegex, "Custom Url is invalid!")
     .max(8192, "Custom Url is too long.")
     .trim()
     .optional()
@@ -53,13 +56,12 @@ const customSettingsShema = z.object({
     .optional()
     .or(z.null()),
 });
+//TODO: prevent shortening already shortened url
 export const validateCustomSettings = async (
   customSettings: CustomSettings
 ) => {
   let deleteTime: number | null = null;
   if (customSettings.deleteAfterTime) {
-    console.log(customSettings.time);
-
     deleteTime =
       Math.floor(new Date().getTime() / 1000) +
       Number(customSettings.time.split(":")[0]) * 60 * 60 +
@@ -80,9 +82,12 @@ export const validateCustomSettings = async (
   );
 
   let customSettingsErrors = "";
+
   if (!customSettingsValidation.success) {
     customSettingsErrors = customSettingsValidation.error.issues
       .map((error) => {
+        // console.log(error.message, error.path);
+        //TODO: Improve error handling
         return error.message;
       })
       .join(" ");

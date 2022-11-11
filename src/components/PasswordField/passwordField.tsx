@@ -54,6 +54,7 @@ export const PasswordField = ({ animationControler }: IProps) => {
       });
   };
   return (
+    // TODO: Show loading animation when waiting for server response
     <StyledPasswordFieldContainer
       as={motion.div}
       variants={containerVariatns}
@@ -67,6 +68,7 @@ export const PasswordField = ({ animationControler }: IProps) => {
       <StyledPasswordField
         autoFocus
         as={motion.input}
+        aria-label="Submit password button"
         initial={{ width: 0, opacity: 0 }}
         animate={{
           width: ["0%", "100%"],

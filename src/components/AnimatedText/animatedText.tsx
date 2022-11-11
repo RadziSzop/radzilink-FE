@@ -50,26 +50,22 @@ export const AnimatedH1 = ({
       <StyledAnimatedH1 fontSize={fontSize} textAlign={textAlign}>
         {words.map((word: string[], index: number) => {
           return (
-            <div key={index} style={{ display: "inline-block" }}>
+            <span
+              key={index}
+              style={{ display: "inline-block", overflow: "hidden" }}
+            >
               {word.map((letter: string, index: number) => {
                 return (
-                  <span
-                    style={{
-                      overflow: "hidden",
-                      display: "inline-block",
-                    }}
+                  <motion.span
                     key={index}
+                    style={{ display: "inline-block", overflow: "hidden" }}
+                    variants={item}
                   >
-                    <motion.span
-                      style={{ display: "inline-block" }}
-                      variants={item}
-                    >
-                      {letter}
-                    </motion.span>
-                  </span>
+                    {letter}
+                  </motion.span>
                 );
               })}
-            </div>
+            </span>
           );
         })}
       </StyledAnimatedH1>

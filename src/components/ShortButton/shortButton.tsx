@@ -95,8 +95,6 @@ export const ShortButton = ({
       setIsError(false);
     } else {
       setIsLoading(true);
-      console.log({ normalizedCustomSettings });
-
       axios
         .post(`${import.meta.env.VITE_SERVERURL}/url`, {
           destinationUrl: normalizedLinkBarValue,
@@ -114,10 +112,13 @@ export const ShortButton = ({
           setCustomSettingsError("");
           setLinkBarError("");
         })
-        .catch(function (error) {
+        .catch((error) => {
           setIsLoading(false);
-          notify(error.message);
-          throw new Error(error);
+          if (error.response.status === 409) {
+            notify("This url is already taken.");
+          } else {
+            notify(error.message);
+          }
         });
     }
   };

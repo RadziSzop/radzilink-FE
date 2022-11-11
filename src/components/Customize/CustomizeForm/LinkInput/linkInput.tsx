@@ -9,9 +9,10 @@ import { StyledCustomInput } from "./styledLinkInput";
 interface IProps {
   type: CustomTextTypes;
   placeholder: string;
+  isPassword?: boolean;
 }
 
-export const LinkInput = ({ placeholder, type }: IProps) => {
+export const LinkInput = ({ placeholder, type, isPassword }: IProps) => {
   const settingsContext: CustomSettingsContext | null =
     useContext(SettingsContext);
   if (!settingsContext) return null;
@@ -21,7 +22,7 @@ export const LinkInput = ({ placeholder, type }: IProps) => {
       spellCheck={false}
       value={customSettings[type]}
       placeholder={placeholder}
-      type="text"
+      type={isPassword ? "password" : "text"}
       onChange={(e) => {
         setCustomSettings((prevState: CustomSettings) => {
           const newSettings = { ...prevState };

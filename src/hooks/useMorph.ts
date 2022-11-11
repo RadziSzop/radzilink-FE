@@ -9,7 +9,6 @@ export const useMorph = () => {
     setCopyUrl?: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     const ticks = desiredText.length;
-    // TODO: Improve morphingUrl function
     const difference: number = originalString.length - desiredText.length;
     const isLong = difference < 0 ? false : true;
     const shuffledDestinationLink = isLong

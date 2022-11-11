@@ -10,7 +10,7 @@ export const StyledLinkBarContainer = styled.div`
 export const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   width: 100%;
   margin-bottom: 2.5rem;
@@ -22,4 +22,11 @@ export const StyledCustomizeContainer = styled.div`
   align-items: flex-start;
   width: 100%;
   max-width: 700px;
+`;
+export const StyledDiscription = styled.h3`
+  color: #dd6d56;
+  font-size: 1.15rem;
+  display: inline-block;
+  margin-bottom: 0.45rem;
+  margin-top: -1.7rem;
 `;
