@@ -38,7 +38,7 @@ export const RedirectPage = () => {
       })
       .catch(async (error) => {
         if (error.response.status === 404) {
-          window.location.replace(`${import.meta.env.VITE_FRONTURL}/404`);
+          window.location.replace(`/404`);
         }
         throw new Error(await error);
       });

@@ -58,8 +58,6 @@ export const validateCustomSettings = async (
 ) => {
   let deleteTime: number | null = null;
   if (customSettings.deleteAfterTime) {
-    console.log(customSettings.time);
-
     deleteTime =
       Math.floor(new Date().getTime() / 1000) +
       Number(customSettings.time.split(":")[0]) * 60 * 60 +

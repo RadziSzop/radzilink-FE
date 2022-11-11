@@ -48,17 +48,18 @@ export const CustomizeForm = () => {
         initial="hidden"
         animate="visible"
       >
-        {/* //TODO: Fix deleteAfter functionality */}
         <div>
           <StyledCustomizeLabel as={motion.label}>
             Delete link after:
           </StyledCustomizeLabel>
-
           <StyledInputContainer as={motion.div} variants={containerVariatns}>
             <StyledCustomizeLabel as={motion.label}>
               First use
             </StyledCustomizeLabel>
-            <CustomToggle type="deleteAfterRead" />
+            <CustomToggle
+              type="deleteAfterRead"
+              aria-label="Toggle for deleting link after first use"
+            />
           </StyledInputContainer>
           <StyledInputContainer as={motion.div} variants={containerVariatns}>
             <StyledCustomizeLabel as={motion.label}>Date</StyledCustomizeLabel>
@@ -67,6 +68,7 @@ export const CustomizeForm = () => {
                 as={motion.input}
                 disabled={!customSettings.deleteAfterDate}
                 type="date"
+                aria-label="Date input for delete link after time"
                 animate={{ width: 105, opacity: 1 }}
                 initial={{ width: 0, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 120, damping: 15 }}
@@ -80,13 +82,18 @@ export const CustomizeForm = () => {
                 }}
               />
             )}
-            <CustomToggle type="deleteAfterDate" disable={"deleteAfterTime"} />
+            <CustomToggle
+              type="deleteAfterDate"
+              disable={"deleteAfterTime"}
+              aria-label="Toggle for deleting link after time"
+            />
           </StyledInputContainer>
           <StyledInputContainer as={motion.div} variants={containerVariatns}>
             <StyledCustomizeLabel as={motion.label}>Time</StyledCustomizeLabel>
             {customSettings.deleteAfterTime && (
               <StyledCustomizeInput
                 as={motion.input}
+                aria-label="Time input for delete link after time"
                 type="time"
                 disabled={!customSettings.deleteAfterTime}
                 value={customSettings.time}
@@ -102,7 +109,11 @@ export const CustomizeForm = () => {
                 }}
               />
             )}
-            <CustomToggle type="deleteAfterTime" disable={"deleteAfterDate"} />
+            <CustomToggle
+              type="deleteAfterTime"
+              disable={"deleteAfterDate"}
+              aria-label="Toggle for deleting link after date"
+            />
           </StyledInputContainer>
         </div>
         <div>
@@ -124,7 +135,11 @@ export const CustomizeForm = () => {
             <StyledCustomizeLabel as={motion.label}>
               Create link for analitics
             </StyledCustomizeLabel>
-            <CustomToggle type="analitics" />
+            <CustomToggle
+              type="analitics"
+              disabled={true}
+              aria-label="Toggle for creating link for analitics"
+            />
           </StyledInputContainer>
         </div>
       </StyledCustomizeForm>

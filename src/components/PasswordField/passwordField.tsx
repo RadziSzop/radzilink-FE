@@ -67,6 +67,7 @@ export const PasswordField = ({ animationControler }: IProps) => {
       <StyledPasswordField
         autoFocus
         as={motion.input}
+        aria-label="Submit password button"
         initial={{ width: 0, opacity: 0 }}
         animate={{
           width: ["0%", "100%"],

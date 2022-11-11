@@ -95,8 +95,6 @@ export const ShortButton = ({
       setIsError(false);
     } else {
       setIsLoading(true);
-      console.log({ normalizedCustomSettings });
-
       axios
         .post(`${import.meta.env.VITE_SERVERURL}/url`, {
           destinationUrl: normalizedLinkBarValue,

@@ -23,7 +23,6 @@ export const MainPage = () => {
   const [linkBarError, setLinkBarError] = useState<string>("");
   const [customSettingsError, setCustomSettingsError] = useState<string>("");
   //TODO: merge errors
-  console.log(customSettingsError);
   const [isCustomize, setIsCustomize] = useState<boolean>(false);
   const [customSettings, setCustomSettings] = useState<CustomSettings>({
     customUrl: "",

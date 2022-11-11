@@ -20,6 +20,7 @@ export const LinkBar = ({
         spellCheck={"false"}
         as={motion.input}
         layout
+        aria-label="Link Input Field"
         value={linkBarValue}
         onChange={(e) => {
           if (!isLoading) {

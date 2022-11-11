@@ -1,6 +1,7 @@
 import styled from "styled-components";
 interface IProps {
   customSettings: boolean;
+  disabled?: boolean;
 }
 export const StyledSwitch = styled.div<IProps>`
   width: 52.5px;
@@ -8,17 +9,20 @@ export const StyledSwitch = styled.div<IProps>`
   position: relative;
   background-color: red;
   background-color: ${(props) =>
-    props.customSettings ? "rgb(237, 193, 145)" : "rgba(155, 155, 155, 0.4)"};
+    props.disabled
+      ? "rgb(240,240,240)"
+      : props.customSettings
+      ? "rgb(237, 193, 145)"
+      : "rgba(155, 155, 155, 0.4)"};
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 25px;
   padding: 4px;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? "default" : "pointer")};
   justify-content: ${({ customSettings }) =>
     customSettings ? "end" : "start"};
 `;
-// WORKAROUND because of framer layout bug
 export const StyledHandle = styled.div<IProps>`
   width: 25px;
   height: 25px;
