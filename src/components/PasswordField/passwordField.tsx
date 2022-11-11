@@ -54,6 +54,7 @@ export const PasswordField = ({ animationControler }: IProps) => {
       });
   };
   return (
+    // TODO: Show loading animation when waiting for server response
     <StyledPasswordFieldContainer
       as={motion.div}
       variants={containerVariatns}

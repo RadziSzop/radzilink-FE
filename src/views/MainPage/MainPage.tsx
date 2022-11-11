@@ -3,6 +3,7 @@ import {
   StyledLinkBarContainer,
   StyledContainer,
   StyledCustomizeContainer,
+  StyledDiscription,
 } from "./styledMainPage";
 import { motion } from "framer-motion";
 import { AnimatedH1 } from "../../components/AnimatedText/animatedText";
@@ -22,6 +23,7 @@ export const SettingsContext = createContext<CustomSettingsContext | null>(
 export const MainPage = () => {
   const [linkBarError, setLinkBarError] = useState<string>("");
   const [customSettingsError, setCustomSettingsError] = useState<string>("");
+
   //TODO: merge errors
   const [isCustomize, setIsCustomize] = useState<boolean>(false);
   const [customSettings, setCustomSettings] = useState<CustomSettings>({
@@ -38,22 +40,38 @@ export const MainPage = () => {
   return (
     <SettingsContext.Provider value={{ customSettings, setCustomSettings }}>
       <StyledContainer>
-        <AnimatedH1 fontSize="3.5rem" colorTo="rgb(221, 109, 86)">
-          Link Shortener
+        <AnimatedH1 fontSize="4rem" colorTo="rgb(221, 109, 86)">
+          Radzi Link
         </AnimatedH1>
+        <StyledDiscription
+          as={motion.h3}
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: 1,
+            transition: {
+              delay: 1.2,
+              duration: 0.7,
+            },
+          }}
+          layout
+        >
+          Free and simple link shortener
+        </StyledDiscription>
         <StyledLinkBarContainer as={motion.div}>
           <LinkBar
             setLinkBarError={setLinkBarError}
             setCustomSettingsError={setCustomSettingsError}
           />
         </StyledLinkBarContainer>
-        {/* TODO: fixed error display */}
         <ErrorText errorText={linkBarError} />
-        <ErrorText errorText={customSettingsError} />
+
         <StyledCustomizeContainer>
           <CustomizeButton setIsCustomize={setIsCustomize} />
         </StyledCustomizeContainer>
-        {isCustomize && <CustomizeForm />}
+        {isCustomize && (
+          /* TODO: fixed error display */
+          <CustomizeForm customSettingsError={customSettingsError} />
+        )}
       </StyledContainer>
     </SettingsContext.Provider>
   );

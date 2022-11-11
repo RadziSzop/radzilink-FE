@@ -112,10 +112,13 @@ export const ShortButton = ({
           setCustomSettingsError("");
           setLinkBarError("");
         })
-        .catch(function (error) {
+        .catch((error) => {
           setIsLoading(false);
-          notify(error.message);
-          throw new Error(error);
+          if (error.response.status === 409) {
+            notify("This url is already taken.");
+          } else {
+            notify(error.message);
+          }
         });
     }
   };

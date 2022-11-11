@@ -3,7 +3,7 @@ import { StyledErrorTextContainer } from "./styledErrorText";
 interface IProps {
   errorText: string;
 }
-function ErrorText({ errorText }: IProps) {
+const ErrorText = ({ errorText }: IProps) => {
   return (
     <StyledErrorTextContainer>
       {errorText && (
@@ -17,6 +17,6 @@ function ErrorText({ errorText }: IProps) {
       )}
     </StyledErrorTextContainer>
   );
-}
+};
 
 export { ErrorText };
