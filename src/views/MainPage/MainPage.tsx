@@ -44,7 +44,7 @@ export const MainPage = () => {
           Radzi Link
         </AnimatedH1>
         <StyledDiscription
-          as={motion.h3}
+          as={motion.h2}
           initial={{ opacity: 0 }}
           animate={{
             opacity: 1,

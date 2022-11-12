@@ -90,7 +90,7 @@ export const RedirectPage = () => {
           <StyledRedirectSpan>
             <AnimatedH1
               colorFrom="#ffffff"
-              colorTo="#dd6d56"
+              colorTo="#ec6e55"
               fontSize="5.5rem"
               textAlign="right"
             >

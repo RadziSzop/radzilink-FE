@@ -12,12 +12,12 @@ export const CustomizeButton = ({ setIsCustomize }: IProps) => {
     visible: {
       opacity: 1,
 
-      backgroundColor: "rgb(236, 117, 93)",
+      backgroundColor: "#ec6e55",
       transition: { opacity: { type: "linear", delay: 2 } },
     },
 
     hover: {
-      backgroundColor: "rgb(188, 84, 62)",
+      backgroundColor: "#bc543e",
       scale: 1.05,
     },
     click: {
