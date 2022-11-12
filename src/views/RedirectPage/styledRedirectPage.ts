@@ -8,7 +8,7 @@ export const StyledRedirectHeader = styled.h2`
 export const StyledRedirectSpan = styled.span`
   text-align: right;
   font-size: 5.5rem;
-  color: #dd6d56;
+  color: #ec6e55;
 `;
 export const StyledPasswordHeader = styled.h2`
   color: white;
@@ -20,7 +20,7 @@ export const StyledPasswordSpan = styled.span`
   display: inline-block;
   margin-left: 1rem;
   font-weight: 700;
-  color: #dd6d56;
+  color: #ec6e55;
 `;
 export const StyledPassTextContainer = styled.div`
   display: flex;

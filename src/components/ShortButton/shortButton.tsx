@@ -50,7 +50,7 @@ export const ShortButton = ({
     visible: {
       opacity: 1,
       scale: 1,
-      backgroundColor: "rgb(236, 117, 93)",
+      backgroundColor: "#ec6e55",
       transition: { opacity: { type: "linear", delay: 1.5 } },
     },
     error: {
@@ -62,7 +62,7 @@ export const ShortButton = ({
       },
     },
     hover: {
-      backgroundColor: "rgb(188, 84, 62)",
+      backgroundColor: "#bc543e",
       scale: 1.05,
     },
     click: {

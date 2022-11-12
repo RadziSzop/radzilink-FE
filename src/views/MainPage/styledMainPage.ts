@@ -23,8 +23,8 @@ export const StyledCustomizeContainer = styled.div`
   width: 100%;
   max-width: 700px;
 `;
-export const StyledDiscription = styled.h3`
-  color: #dd6d56;
+export const StyledDiscription = styled.h2`
+  color: #ec6e55;
   font-size: 1.15rem;
   display: inline-block;
   margin-bottom: 0.45rem;

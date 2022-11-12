@@ -4,7 +4,7 @@ export const StyledCustomizeButton = styled.div`
   justify-content: center;
   align-items: center;
   width: 100px;
-  background-color: #e2654a;
+  background-color: #ec6e55;
   padding: 5px 10px;
   border-radius: 20px;
   color: white;
