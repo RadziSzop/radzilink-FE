@@ -6,7 +6,7 @@ import {
   StyledDiscription,
 } from "./styledMainPage";
 import { motion } from "framer-motion";
-import { AnimatedH1 } from "../../components/AnimatedText/animatedText";
+import { AnimatedText } from "../../components/AnimatedText/animatedText";
 import { ErrorText } from "../../components/ErrorText/errorText";
 import { createContext, useState } from "react";
 import { CustomizeButton } from "../../components/Customize/CustomizeButton/customizeButton";
@@ -23,8 +23,6 @@ export const SettingsContext = createContext<CustomSettingsContext | null>(
 export const MainPage = () => {
   const [linkBarError, setLinkBarError] = useState<string>("");
   const [customSettingsError, setCustomSettingsError] = useState<string>("");
-
-  //TODO: merge errors
   const [isCustomize, setIsCustomize] = useState<boolean>(false);
   const [customSettings, setCustomSettings] = useState<CustomSettings>({
     customUrl: "",
@@ -40,9 +38,9 @@ export const MainPage = () => {
   return (
     <SettingsContext.Provider value={{ customSettings, setCustomSettings }}>
       <StyledContainer>
-        <AnimatedH1 fontSize="4rem" colorTo="rgb(221, 109, 86)">
+        <AnimatedText fontSize="4rem" colorTo="rgb(221, 109, 86)" type="h1">
           Radzi Link
-        </AnimatedH1>
+        </AnimatedText>
         <StyledDiscription
           as={motion.h2}
           initial={{ opacity: 0 }}
@@ -55,7 +53,7 @@ export const MainPage = () => {
           }}
           layout
         >
-          Free and simple link shortener
+          Simple and private link shortener
         </StyledDiscription>
         <StyledLinkBarContainer as={motion.div}>
           <LinkBar
@@ -69,7 +67,6 @@ export const MainPage = () => {
           <CustomizeButton setIsCustomize={setIsCustomize} />
         </StyledCustomizeContainer>
         {isCustomize && (
-          /* TODO: fixed error display */
           <CustomizeForm customSettingsError={customSettingsError} />
         )}
       </StyledContainer>

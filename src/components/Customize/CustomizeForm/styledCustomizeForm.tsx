@@ -3,7 +3,6 @@ export const StyledInputContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 300px;
   width: 100%;
   height: fit-content;
   padding: 0.5rem;
@@ -14,7 +13,6 @@ export const StyledCustomizeForm = styled.div`
   padding: 0.5rem 1rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  /* grid-template-rows: 1fr 1fr; */
   width: 100%;
   max-width: 700px;
   border-radius: 10px;
@@ -25,6 +23,27 @@ export const StyledCustomizeForm = styled.div`
   > * {
     &:first-child {
       border-right: 2px solid #f1f1f1;
+    }
+    &:last-child {
+      padding-left: 1rem;
+    }
+  }
+  @media (max-width: 555px) {
+    grid-template-columns: 1fr;
+    > * {
+      &:first-child {
+        padding-bottom: 1.25rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #f1f1f1;
+        border-right: none;
+      }
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      &:last-child {
+        padding-left: 0rem;
+      }
     }
   }
 `;

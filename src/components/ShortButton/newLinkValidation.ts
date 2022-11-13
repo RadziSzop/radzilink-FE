@@ -12,16 +12,16 @@ const linkBarSchema = z
   .string({
     invalid_type_error: "Url must be a string",
   })
-  .min(1, "Url can't be empty!")
-  .max(8192, "Url is too long!")
-  .regex(newLinkRegex, "Url is invalid!")
+  .min(1, "Url can't be empty.")
+  .max(8192, "Url is too long.")
+  .regex(newLinkRegex, "Url is invalid.")
   .trim();
 const customSettingsShema = z.object({
   customUrl: z
     .string({
       invalid_type_error: "CustomUrl must be a string",
     })
-    .regex(customUrlRegex, "Custom Url is invalid!")
+    .regex(customUrlRegex, "Custom Url is invalid.")
     .max(8192, "Custom Url is too long.")
     .trim()
     .optional()
@@ -29,7 +29,7 @@ const customSettingsShema = z.object({
 
   password: z
     .string({
-      invalid_type_error: "Password must be a string",
+      invalid_type_error: "Password must be a string.",
     })
     .min(6, "Password is too short.")
     .max(128, "Password is too long.")
@@ -86,11 +86,17 @@ export const validateCustomSettings = async (
   if (!customSettingsValidation.success) {
     customSettingsErrors = customSettingsValidation.error.issues
       .map((error) => {
-        // console.log(error.message, error.path);
-        //TODO: Improve error handling
+        console.log(error.message, error.path);
+        console.log(error);
+        if (error.path[0] === "deleteTime") {
+          return `Invalid input at ${
+            customSettings.deleteAfterTime ? "time field." : "date field."
+          }`;
+        }
+
         return error.message;
       })
-      .join(" ");
+      .join("  ");
   }
   return { customSettingsErrors, normalizedCustomSettings };
 };

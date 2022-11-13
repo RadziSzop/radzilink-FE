@@ -26,7 +26,8 @@ export const StyledPasswordField = styled.input<IProps>`
 export const StyledPasswordFieldContainer = styled.div`
   position: relative;
   margin-top: 1rem;
-  width: 500px;
+  max-width: 500px;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;

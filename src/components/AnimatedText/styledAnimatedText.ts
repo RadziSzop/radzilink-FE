@@ -4,7 +4,8 @@ interface IProps {
   textAlign?: string;
 }
 
-export const StyledAnimatedH1 = styled.h1<IProps>`
-  text-align: ${(props) => props.textAlign};
-  font-size: ${(props) => props.fontSize};
+export const StyledAnimatedText = styled.p<IProps>`
+  white-space: nowrap;
+  text-align: ${({ textAlign }) => textAlign};
+  font-size: ${({ fontSize }) => fontSize};
 `;

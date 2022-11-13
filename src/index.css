@@ -12,11 +12,12 @@
   min-height: 100vh;
 }
 .appContainer{
-  padding: 0.5rem;
+  padding: 0.75rem;
   margin: 0 auto;
   min-height: 100vh;
+  min-width: 320px;
   max-width: 1920px;
-  width: 80vw;
+  /* width: 80vw; */
   display: flex;
   flex-direction: column;
   justify-content: center;

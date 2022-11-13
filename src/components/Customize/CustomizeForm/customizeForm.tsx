@@ -32,7 +32,7 @@ export const CustomizeForm = ({ customSettingsError }: IProps) => {
       },
     },
   };
-  const containerVariatns = {
+  const fieldVariants = {
     hidden: {
       opacity: 0,
     },
@@ -52,10 +52,10 @@ export const CustomizeForm = ({ customSettingsError }: IProps) => {
         animate="visible"
       >
         <div>
-          <StyledCustomizeLabel as={motion.label}>
+          <StyledCustomizeLabel as={motion.label} variants={fieldVariants}>
             Delete link after:
           </StyledCustomizeLabel>
-          <StyledInputContainer as={motion.div} variants={containerVariatns}>
+          <StyledInputContainer as={motion.div} variants={fieldVariants}>
             <StyledCustomizeLabel as={motion.label}>
               First use
             </StyledCustomizeLabel>
@@ -64,7 +64,7 @@ export const CustomizeForm = ({ customSettingsError }: IProps) => {
               aria-label="Toggle for deleting link after first use"
             />
           </StyledInputContainer>
-          <StyledInputContainer as={motion.div} variants={containerVariatns}>
+          <StyledInputContainer as={motion.div} variants={fieldVariants}>
             <StyledCustomizeLabel as={motion.label}>Date</StyledCustomizeLabel>
             {customSettings.deleteAfterDate && (
               <StyledCustomizeInput
@@ -91,7 +91,7 @@ export const CustomizeForm = ({ customSettingsError }: IProps) => {
               aria-label="Toggle for deleting link after time"
             />
           </StyledInputContainer>
-          <StyledInputContainer as={motion.div} variants={containerVariatns}>
+          <StyledInputContainer as={motion.div} variants={fieldVariants}>
             <StyledCustomizeLabel as={motion.label}>Time</StyledCustomizeLabel>
             {customSettings.deleteAfterTime && (
               <StyledCustomizeInput
@@ -120,15 +120,17 @@ export const CustomizeForm = ({ customSettingsError }: IProps) => {
           </StyledInputContainer>
         </div>
         <div>
-          <StyledInputContainer as={motion.div} variants={containerVariatns}>
+          <StyledCustomizeLabel as={motion.label} variants={fieldVariants}>
+            Other Settings:
+          </StyledCustomizeLabel>
+          <StyledInputContainer as={motion.div} variants={fieldVariants}>
             <StyledCustomizeLabel as={motion.label}>
               Custom Link
-              {/* TODO: fix invalid custom links */}
             </StyledCustomizeLabel>
             <LinkInput type="customUrl" placeholder="Leave for default" />
           </StyledInputContainer>
 
-          <StyledInputContainer as={motion.div} variants={containerVariatns}>
+          <StyledInputContainer as={motion.div} variants={fieldVariants}>
             <StyledCustomizeLabel as={motion.label}>
               Password
             </StyledCustomizeLabel>
@@ -138,7 +140,7 @@ export const CustomizeForm = ({ customSettingsError }: IProps) => {
               placeholder="Leave for no password"
             />
           </StyledInputContainer>
-          <StyledInputContainer as={motion.div} variants={containerVariatns}>
+          <StyledInputContainer as={motion.div} variants={fieldVariants}>
             <StyledCustomizeLabel as={motion.label}>
               Create link for analitics
             </StyledCustomizeLabel>
@@ -148,9 +150,9 @@ export const CustomizeForm = ({ customSettingsError }: IProps) => {
               aria-label="Toggle for creating link for analitics"
             />
           </StyledInputContainer>
-          <ErrorText errorText={customSettingsError} />
         </div>
       </StyledCustomizeForm>
+      <ErrorText errorText={customSettingsError} />
     </>
   );
 };

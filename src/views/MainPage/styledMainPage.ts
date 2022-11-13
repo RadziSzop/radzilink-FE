@@ -3,6 +3,7 @@ export const StyledLinkBarContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  max-width: 100%;
   width: 100%;
   position: relative;
   max-width: 700px;

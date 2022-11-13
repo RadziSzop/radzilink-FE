@@ -4,6 +4,7 @@ interface IProps {
   disabled?: boolean;
 }
 export const StyledSwitch = styled.div<IProps>`
+  min-width: 52.5px;
   width: 52.5px;
   height: 32.5px;
   position: relative;

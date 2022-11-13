@@ -20,11 +20,11 @@ export const PasswordField = ({ animationControler }: IProps) => {
   const containerVariatns = {
     hide: {
       opacity: [1, 0],
-      width: [500, 30],
-      x: 125,
+      width: ["100%", "5%"],
+      x: 50,
       transition: {
         x: {
-          duration: 0.6,
+          duration: 0.7,
         },
       },
     },

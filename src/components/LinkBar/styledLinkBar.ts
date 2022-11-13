@@ -9,7 +9,7 @@ export const StyledLinkBar = styled.input`
   font-size: 1.25rem;
   color: #131313;
   letter-spacing: 1.5px;
-
+  width: 100%;
   :focus {
     outline: none;
   }
