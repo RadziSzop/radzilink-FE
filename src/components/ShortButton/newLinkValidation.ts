@@ -8,6 +8,7 @@ const newLinkRegex =
   /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
 const customUrlRegex = /^[a-zA-Z0-9]+$/;
 
+//TODO: add !startsWith to prevent shortening same linke
 const linkBarSchema = z
   .string({
     invalid_type_error: "Url must be a string",
@@ -56,7 +57,6 @@ const customSettingsShema = z.object({
     .optional()
     .or(z.null()),
 });
-//TODO: prevent shortening already shortened url
 export const validateCustomSettings = async (
   customSettings: CustomSettings
 ) => {

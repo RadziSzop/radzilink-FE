@@ -1,7 +1,7 @@
 import axios from "axios";
 import { motion, useAnimationControls } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AnimatedText } from "../../components/AnimatedText/animatedText";
 import { PasswordField } from "../../components/PasswordField/passwordField";
 import {
@@ -15,6 +15,8 @@ export const RedirectPage = () => {
   const [isProtected, setIsProtected] = useState<boolean>(false);
   const { index } = useParams();
   const animationControler = useAnimationControls();
+  const navigate = useNavigate();
+
   const containerVariatns = {
     hide: {
       opacity: 0,
@@ -38,7 +40,7 @@ export const RedirectPage = () => {
       })
       .catch(async (error) => {
         if (error.response.status === 404) {
-          window.location.replace(`/404`);
+          navigate("/404");
         }
         throw new Error(await error);
       });

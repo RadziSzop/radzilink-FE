@@ -16,7 +16,7 @@ export const Styled404Span = styled.span`
   color: #ec6e55;
 `;
 export const StyledIndicator = styled.div`
-  width: 10px;
+  width: 1%;
   height: 5px;
   background-color: #ec6e55;
   position: fixed;
