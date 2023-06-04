@@ -6,9 +6,10 @@ import {
 import lock from "../../assets/lock.svg";
 import { AnimationControls, motion } from "framer-motion";
 import { ChangeEvent, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useParams } from "react-router-dom";
 import { notification } from "../Notification/notification";
+import { GetProtectedUrlResponse } from "../../types/requests";
 interface IProps {
   animationControler: AnimationControls;
 }
@@ -37,9 +38,12 @@ export const PasswordField = ({ animationControler }: IProps) => {
   };
   const handleClick = async () => {
     axios
-      .post(`${import.meta.env.VITE_SERVERURL}/url/${index}`, {
-        password: password,
-      })
+      .post<GetProtectedUrlResponse>(
+        `${import.meta.env.VITE_SERVERURL}/url/${index}`,
+        {
+          password: password,
+        }
+      )
       .then(async ({ data }) => {
         if (data.success) {
           await animationControler.start("hide");
@@ -48,13 +52,11 @@ export const PasswordField = ({ animationControler }: IProps) => {
           handleWrongPass();
         }
       })
-      .catch((error) => {
-        notify(error.message);
-        throw new Error(error);
+      .catch(() => {
+        notify("Password is incorrect");
       });
   };
   return (
-    // TODO: Show loading animation when waiting for server response
     <StyledPasswordFieldContainer
       as={motion.div}
       variants={containerVariatns}
@@ -80,7 +82,7 @@ export const PasswordField = ({ animationControler }: IProps) => {
           },
         }}
         type="password"
-        placeholder="Enter passwrod"
+        placeholder="Enter password"
         value={password}
         fontColor={Boolean(isWrongPassword)}
         onInput={(e: ChangeEvent<HTMLInputElement>) => {

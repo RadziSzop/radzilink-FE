@@ -8,23 +8,30 @@ const newLinkRegex =
   /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
 const customUrlRegex = /^[a-zA-Z0-9]+$/;
 
-//TODO: add !startsWith to prevent shortening same linke
 const linkBarSchema = z
   .string({
     invalid_type_error: "Url must be a string",
   })
+  .trim()
   .min(1, "Url can't be empty.")
   .max(8192, "Url is too long.")
   .regex(newLinkRegex, "Url is invalid.")
-  .trim();
+  .refine(
+    (value) =>
+      !value.startsWith("http://radzi.link") &&
+      !value.startsWith("https://radzi.link"),
+    "You can't short already shortened URLs"
+  );
+
 const customSettingsShema = z.object({
   customUrl: z
     .string({
       invalid_type_error: "CustomUrl must be a string",
     })
+    .trim()
     .regex(customUrlRegex, "Custom Url is invalid.")
     .max(8192, "Custom Url is too long.")
-    .trim()
+    .refine((value) => value !== "404", "You can't shorten to this custom URL")
     .optional()
     .or(z.null().optional()),
 
@@ -32,9 +39,9 @@ const customSettingsShema = z.object({
     .string({
       invalid_type_error: "Password must be a string.",
     })
+    .trim()
     .min(6, "Password is too short.")
     .max(128, "Password is too long.")
-    .trim()
     .optional()
     .or(z.null()),
   deleteTime: z
