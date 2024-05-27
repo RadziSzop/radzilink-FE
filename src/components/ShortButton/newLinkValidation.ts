@@ -16,12 +16,12 @@ const linkBarSchema = z
   .min(1, "Url can't be empty.")
   .max(8192, "Url is too long.")
   .regex(newLinkRegex, "Url is invalid.")
-  .refine(
-    (value) =>
-      !value.startsWith("http://radzi.link") &&
-      !value.startsWith("https://radzi.link"),
-    "You can't short already shortened URLs"
-  );
+  .refine((value) => {
+    return !value.includes(
+      import.meta.env.VITE_FRONTURL.split("//")[1] ??
+        import.meta.env.VITE_FRONTURL
+    );
+  }, "You can't short already shortened URLs");
 
 const customSettingsShema = z.object({
   customUrl: z
