@@ -12,28 +12,36 @@ const linkBarSchema = z
   .string({
     invalid_type_error: "Url must be a string",
   })
-  .min(1, "Url can't be empty!")
-  .max(8192, "Url is too long!")
-  .regex(newLinkRegex, "Url is invalid!")
-  .trim();
+  .trim()
+  .min(1, "Url can't be empty.")
+  .max(8192, "Url is too long.")
+  .regex(newLinkRegex, "Url is invalid.")
+  .refine((value) => {
+    return !value.includes(
+      import.meta.env.VITE_FRONTURL.split("//")[1] ??
+        import.meta.env.VITE_FRONTURL
+    );
+  }, "You can't short already shortened URLs");
+
 const customSettingsShema = z.object({
   customUrl: z
     .string({
       invalid_type_error: "CustomUrl must be a string",
     })
-    .regex(customUrlRegex, "Custom Url is invalid!")
-    .max(8192, "Custom Url is too long.")
     .trim()
+    .regex(customUrlRegex, "Custom Url is invalid.")
+    .max(8192, "Custom Url is too long.")
+    .refine((value) => value !== "404", "You can't shorten to this custom URL")
     .optional()
     .or(z.null().optional()),
 
   password: z
     .string({
-      invalid_type_error: "Password must be a string",
+      invalid_type_error: "Password must be a string.",
     })
+    .trim()
     .min(6, "Password is too short.")
     .max(128, "Password is too long.")
-    .trim()
     .optional()
     .or(z.null()),
   deleteTime: z
@@ -56,7 +64,6 @@ const customSettingsShema = z.object({
     .optional()
     .or(z.null()),
 });
-//TODO: prevent shortening already shortened url
 export const validateCustomSettings = async (
   customSettings: CustomSettings
 ) => {
@@ -86,11 +93,17 @@ export const validateCustomSettings = async (
   if (!customSettingsValidation.success) {
     customSettingsErrors = customSettingsValidation.error.issues
       .map((error) => {
-        // console.log(error.message, error.path);
-        //TODO: Improve error handling
+        console.log(error.message, error.path);
+        console.log(error);
+        if (error.path[0] === "deleteTime") {
+          return `Invalid input at ${
+            customSettings.deleteAfterTime ? "time field." : "date field."
+          }`;
+        }
+
         return error.message;
       })
-      .join(" ");
+      .join("  ");
   }
   return { customSettingsErrors, normalizedCustomSettings };
 };

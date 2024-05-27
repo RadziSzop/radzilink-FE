@@ -33,12 +33,19 @@ export const LinkBar = ({
         type="text"
         initial={{ width: 0, opacity: 0 }}
         animate={{
-          width: [70, 700],
+          width: ["10%", "100%"],
           opacity: 1,
           transition: {
-            type: "spring",
-            delay: 0.5,
-            stiffness: 50,
+            width: {
+              type: "spring",
+              delay: 0.3,
+              stiffness: 50,
+            },
+            opacity: {
+              type: "spring",
+              delay: 0.5,
+              stiffness: 50,
+            },
           },
         }}
       />

@@ -1,8 +1,8 @@
 import axios from "axios";
 import { motion, useAnimationControls } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { AnimatedH1 } from "../../components/AnimatedText/animatedText";
+import { useNavigate, useParams } from "react-router-dom";
+import { AnimatedText } from "../../components/AnimatedText/animatedText";
 import { PasswordField } from "../../components/PasswordField/passwordField";
 import {
   StyledPasswordHeader,
@@ -15,6 +15,8 @@ export const RedirectPage = () => {
   const [isProtected, setIsProtected] = useState<boolean>(false);
   const { index } = useParams();
   const animationControler = useAnimationControls();
+  const navigate = useNavigate();
+
   const containerVariatns = {
     hide: {
       opacity: 0,
@@ -38,7 +40,7 @@ export const RedirectPage = () => {
       })
       .catch(async (error) => {
         if (error.response.status === 404) {
-          window.location.replace(`/404`);
+          navigate("/404");
         }
         throw new Error(await error);
       });
@@ -49,7 +51,14 @@ export const RedirectPage = () => {
   return (
     <>
       {isProtected ? (
-        <>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            alignItems: "flex-end",
+          }}
+        >
           <StyledPassTextContainer
             as={motion.div}
             animate={animationControler}
@@ -79,7 +88,7 @@ export const RedirectPage = () => {
             </StyledPasswordSpan>
           </StyledPassTextContainer>
           <PasswordField animationControler={animationControler} />
-        </>
+        </div>
       ) : (
         <StyledRedirectHeader as={motion.h2} drag>
           <StyledRedirectSpan as={motion.span} drag>
@@ -88,14 +97,14 @@ export const RedirectPage = () => {
           are being
           <br />
           <StyledRedirectSpan>
-            <AnimatedH1
+            <AnimatedText
               colorFrom="#ffffff"
               colorTo="#ec6e55"
-              fontSize="5.5rem"
+              fontSize="inherit"
               textAlign="right"
             >
               Redirected
-            </AnimatedH1>
+            </AnimatedText>
           </StyledRedirectSpan>
         </StyledRedirectHeader>
       )}
